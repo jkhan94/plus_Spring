@@ -21,4 +21,9 @@ public class AuthRestController {
         return userService.signup(requestDto);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AuthRequestDto requestDto) {
+        return userService.login(requestDto);
+    }
+
 }
