@@ -31,4 +31,11 @@ public class PostController {
                 .status(HttpStatus.OK)
                 .body(postService.editPost(postId,requestDto));
     }
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> deletePost(@PathVariable(name = "postId") Long postId){
+        postService.deletePost(postId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("삭제가 완료되었습니다.");
+    }
 }
