@@ -2,7 +2,8 @@ package com.sparta.easyspring.comment.entity;
 
 
 import com.sparta.easyspring.TimeStamp.TimeStamp;
-import com.sparta.easyspring.auth.User;
+
+import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.post.Post;
 import jakarta.persistence.*;
@@ -29,7 +30,7 @@ public class Comment extends TimeStamp {
     private String comment;
     private Long likes;
 
-    public Comment(User user, Post post, String comment, Long likes) {
+    public Comment(User user, Post post, String comment) {
         this.user = user;
         this.post = post;
         this.comment = comment;

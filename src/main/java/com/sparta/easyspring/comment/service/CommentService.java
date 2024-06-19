@@ -1,11 +1,15 @@
 package com.sparta.easyspring.comment.service;
 
-import com.sparta.easyspring.auth.service.UserService;
+import com.sparta.easyspring.auth.entity.User;
+import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
+import com.sparta.easyspring.post.Post;
+import com.sparta.easyspring.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,13 +22,12 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private UserService userService;
+    private PostService postService;
 
     public CommentResponseDto createNewComment(Long postId, CommentRequestDto requestDto) {
-//        findById = (repository or service or userDetails 에서)
-//        User user = userService.findById or userDetails.getUser()
-//        findById (repository or service 에서)
-//        Post post = postService.findById(postId).orElseThrow(() -> new IllegalArgumentException("포스트가 존재 하지 않음");
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDetails.getUser();
+        Post post = postService.findPostbyId(postId);
 
         Comment comment = new Comment(user, post, requestDto.getComment());
 
@@ -55,7 +58,7 @@ public class CommentService {
     }
 
     private Comment getAuthorizedComment(Long commentId) {
-        // 코멘트를 찾고, 코멘트에서 userId를 찾고, loginUser의 userId를 비교
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User loginUser = userDetails.getUser();
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글 존재 하지 않음"));
