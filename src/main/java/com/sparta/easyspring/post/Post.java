@@ -29,4 +29,9 @@ public class Post extends TimeStamp {
         this.contents= requestDto.getContents();
         this.likes=0L;
     }
+
+    public void update(PostRequestDto requestDto) {
+        this.title= requestDto.getTitle();
+        this.contents= requestDto.getContents();
+    }
 }

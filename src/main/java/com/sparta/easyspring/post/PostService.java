@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,4 +26,17 @@ public class PostService {
         return new PostResponseDto(newPost);
     }
 
+    public PostResponseDto editPost(Long postId, PostRequestDto requestDto) {
+        Post editPost = findPostbyId(postId);
+        editPost.update(requestDto);
+        postRepository.save(editPost);
+        return new PostResponseDto(editPost);
+    }
+
+    public Post findPostbyId(Long postId){
+        Post checkPost = postRepository.findById(postId).orElseThrow(
+                ()->new IllegalArgumentException("찾을 수 없는 포스트 입니다.")
+        );
+        return checkPost;
+    }
 }

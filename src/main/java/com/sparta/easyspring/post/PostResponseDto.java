@@ -14,13 +14,13 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public PostResponseDto(Post newPost) {
-        this.id= newPost.getId();
-        this.title= newPost.getTitle();
-        this.contents= newPost.getContents();
-        this.likes= newPost.getLikes();
-        this.userId= 1L; //newPost.getUser().getId();
-        this.createdAt= newPost.getCreatedAt();
-        this.modifiedAt= newPost.getModifiedAt();
+    public PostResponseDto(Post post) {
+        this.id= post.getId();
+        this.title= post.getTitle();
+        this.contents= post.getContents();
+        this.likes= post.getLikes();
+        this.userId= 1L; //post.getUser().getId();
+        this.createdAt= post.getCreatedAt();
+        this.modifiedAt= post.getModifiedAt();
     }
 }

@@ -25,4 +25,10 @@ public class PostController {
                 .body(postService.addPost(requestDto));
     }
 
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> editPost(@PathVariable(name = "postId") Long postId,@RequestBody PostRequestDto requestDto){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(postService.editPost(postId,requestDto));
+    }
 }
