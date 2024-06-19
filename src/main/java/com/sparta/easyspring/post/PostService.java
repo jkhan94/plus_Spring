@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,4 +53,15 @@ public class PostService {
         return post;
     }
 
+    @Transactional
+    public void increaseLikes(Long postId){
+        Post post = findPostbyId(postId);
+        post.increaseLikes();
+    }
+
+    @Transactional
+    public void decreaseLikes(Long postId){
+        Post post = findPostbyId(postId);
+        post.decreaseLikes();
+    }
 }

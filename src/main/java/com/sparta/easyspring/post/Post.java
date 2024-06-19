@@ -34,4 +34,12 @@ public class Post extends TimeStamp {
         this.title= requestDto.getTitle();
         this.contents= requestDto.getContents();
     }
+
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
+    }
 }
