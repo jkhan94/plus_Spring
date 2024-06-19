@@ -3,6 +3,8 @@ package com.sparta.easyspring.post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -11,6 +13,19 @@ public class PostService {
     public PostResponseDto addPost(PostRequestDto requestDto) {
         Post post = new Post(requestDto);
         postRepository.save(post);
+        return new PostResponseDto(post);
+    }
+
+    public List<PostResponseDto> getAllPost() {
+        List<PostResponseDto> postList = postRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(PostResponseDto::new)
+                .toList();
+        return postList;
+    }
+
+    public PostResponseDto getPost(Long postId) {
+        Post post = findPostbyId(postId);
         return new PostResponseDto(post);
     }
 
@@ -32,4 +47,5 @@ public class PostService {
         );
         return post;
     }
+
 }

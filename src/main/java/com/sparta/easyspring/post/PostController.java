@@ -1,6 +1,7 @@
 package com.sparta.easyspring.post;
 
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,19 @@ public class PostController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(postService.addPost(requestDto));
+    }
+    @GetMapping
+    public ResponseEntity<List<PostResponseDto>> getAllPost(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(postService.getAllPost());
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> getPost(@PathVariable(name = "postId") Long postId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(postService.getPost(postId));
     }
 
     @PutMapping("/{postId}")
