@@ -1,6 +1,10 @@
 package com.sparta.easyspring.post;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +20,11 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-    public List<PostResponseDto> getAllPost() {
-        List<PostResponseDto> postList = postRepository.findAllByOrderByCreatedAtDesc()
-                .stream()
-                .map(PostResponseDto::new)
-                .toList();
+    public List<PostResponseDto> getAllPost(int page, String sortBy) {
+        Sort sort = Sort.by(Sort.Direction.DESC,sortBy);
+        Pageable pageable = PageRequest.of(page,5,sort);
+        Page<PostResponseDto> postPage = postRepository.findAll(pageable).map(PostResponseDto::new);
+        List<PostResponseDto> postList = postPage.getContent();
         return postList;
     }
 

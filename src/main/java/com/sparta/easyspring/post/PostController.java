@@ -3,6 +3,7 @@ package com.sparta.easyspring.post;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,10 +27,11 @@ public class PostController {
                 .body(postService.addPost(requestDto));
     }
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getAllPost(){
+    public ResponseEntity<List<PostResponseDto>> getAllPost(@RequestParam(value = "page",defaultValue = "1") int page,
+                                                            @RequestParam(value = "sortBy",defaultValue = "createdAt") String sortBy){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(postService.getAllPost());
+                .body(postService.getAllPost(page-1,sortBy));
     }
 
     @GetMapping("/{postId}")
