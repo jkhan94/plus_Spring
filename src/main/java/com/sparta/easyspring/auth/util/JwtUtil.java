@@ -37,6 +37,16 @@ public class JwtUtil {
         return generateToken((username), refreshTokenExpiration);
     }
 
+    public String createAccessTokenFromRefresh(String refreshToken) {
+
+        if(validateToken(refreshToken)){
+            String username = getUsernameFromToken(refreshToken);
+            return createAccessToken(username);
+        }
+        throw new IllegalArgumentException("Refresh토큰이 유효하지 않음");
+    }
+
+
     /**
      * 토큰 생성
      *
@@ -68,6 +78,19 @@ public class JwtUtil {
     }
 
     /**
+     * 토큰 유효성 검사
+     * @param token
+     * @return
+     */
+    public boolean validateToken(String token){
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * JWT 토큰에서 Claims추출 (사용자 정보)
      *
      * @param token
@@ -83,7 +106,6 @@ public class JwtUtil {
 
     /**
      * Bearer 제거하고 token 보내기
-     *
      * @param token
      * @return
      */
