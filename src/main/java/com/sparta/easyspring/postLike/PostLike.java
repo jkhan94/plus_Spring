@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// TODO User, Post temp 거 사용중
 @Entity
 @Table(name = "postlike")
 @Getter
