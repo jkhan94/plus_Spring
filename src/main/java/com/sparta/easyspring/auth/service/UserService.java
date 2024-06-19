@@ -2,7 +2,10 @@ package com.sparta.easyspring.auth.service;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.entity.User;
+import com.sparta.easyspring.auth.entity.UserRoleEnum;
+import com.sparta.easyspring.auth.entity.UserStatus;
 import com.sparta.easyspring.auth.repository.UserRepository;
+import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +50,7 @@ public class UserService {
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        User user = new User(authName, encodedPassword);
+        User user = new User(authName, encodedPassword, UserRoleEnum.USER);
         userRepository.save(user);
 
         return ResponseEntity.ok("회원가입 성공");
@@ -65,14 +68,45 @@ public class UserService {
 
         String accessToken = jwtUtil.createAccessToken(user.getUsername());
         String refreshToken = jwtUtil.createRefreshToken(user.getUsername());
-
+        user.updateRefreshToken(refreshToken);
         userRepository.save(user);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         headers.set("Refresh-Token", refreshToken);
 
-        return new ResponseEntity<>("로그인 성공",headers, HttpStatus.OK);
+        return new ResponseEntity<>("로그인 성공 : "+user.getUsername(),headers, HttpStatus.OK);
     }
 
+    public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user ==null){
+            return ResponseEntity.badRequest().body("로그아웃 실패 ");
+        }
+
+        user.clearRefreshToken();
+        userRepository.save(user);
+
+        return ResponseEntity.ok("로그아웃 성공 : "+username);
+    }
+
+    public ResponseEntity<String> withdraw(UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
+        User user = userRepository.findByUsername(username).orElse(null);
+
+        if(user ==null){
+            return ResponseEntity.badRequest().body("회원탈퇴 실패 : 유저를 찾을 수 없습니다.");
+        }
+
+        if (UserStatus.WITHDRAW == user.getUserStatus()) {
+            return ResponseEntity.badRequest().body("회원탈퇴 실패 : 이미 탈퇴한 회원");
+        }
+
+        user.withdraw();
+        user.clearRefreshToken();
+
+        userRepository.save(user);
+        return ResponseEntity.ok("회원탈퇴 성공");
+    }
 }
