@@ -1,14 +1,10 @@
 package com.sparta.easyspring.post;
 
 import com.sparta.easyspring.TimeStamp.TimeStamp;
-import com.sparta.easyspring.auth.User;
-import com.sparta.easyspring.comment.Comment;
+import com.sparta.easyspring.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
