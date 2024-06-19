@@ -11,3 +11,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+jwt:
+  secret:
+    key: 79abec74b8e4b896e246892ec48ea1be24d0a913bbd5c71054c156425a22f144
+  token:
+    expiration: 1800000
+  refresh:
+    token:
+      expiration: 1209600000
+
+server:
+  port: 8080
