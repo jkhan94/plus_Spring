@@ -1,10 +1,11 @@
 package com.sparta.easyspring.comment.service;
 
+import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
-import com.sparta.easyspring.post.Post;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,16 +14,16 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    private final CommentRepository commentRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
-    public CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
+    @Autowired
+    private UserService userService;
 
-    public CommentResponseDto createComment(Long postId, CommentRequestDto requestDto) {
-//        todo findById = (repository or service or userDetails 에서)
+    public CommentResponseDto createNewComment(Long postId, CommentRequestDto requestDto) {
+//        findById = (repository or service or userDetails 에서)
 //        User user = userService.findById or userDetails.getUser()
-//        todo findById (repository or service 에서)
+//        findById (repository or service 에서)
 //        Post post = postService.findById(postId).orElseThrow(() -> new IllegalArgumentException("포스트가 존재 하지 않음");
 
         Comment comment = new Comment(user, post, requestDto.getComment());
@@ -42,13 +43,13 @@ public class CommentService {
         return commentResponseDtoList;
     }
 
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto) {
+    public CommentResponseDto updateExistingComment(Long commentId, CommentRequestDto requestDto) {
         Comment existingComment = getAuthorizedComment(commentId);
         existingComment.editComment(requestDto);
         return entityToDto(existingComment);
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteExistingComment(Long commentId) {
         Comment comment = getAuthorizedComment(commentId);
         commentRepository.delete(comment);
     }
