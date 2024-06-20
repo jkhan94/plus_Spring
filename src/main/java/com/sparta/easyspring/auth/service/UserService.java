@@ -12,6 +12,8 @@ import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import java.util.Optional;
 
+
+import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -199,5 +203,10 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException(ErrorEnum.USER_NOT_FOUND.getMsg())
         );
+    }
+
+    public User findUserById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        return user;
     }
 }
