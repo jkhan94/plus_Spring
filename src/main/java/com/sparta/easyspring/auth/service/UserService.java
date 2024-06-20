@@ -3,6 +3,8 @@ package com.sparta.easyspring.auth.service;
 import static com.sparta.easyspring.exception.ErrorEnum.*;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
+import com.sparta.easyspring.auth.dto.AuthResponseDto;
+import com.sparta.easyspring.auth.dto.ProfileResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
 import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
@@ -15,6 +17,8 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import com.sparta.easyspring.exception.CustomException;
+import com.sparta.easyspring.exception.ErrorEnum;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -44,23 +48,21 @@ public class UserService {
      * @return
      */
 
-    public ResponseEntity<String> signup(AuthRequestDto signupRequest) {
+    public ResponseEntity<AuthResponseDto> signup(AuthRequestDto signupRequest) {
         String authName = signupRequest.getUsername();
         String password = signupRequest.getPassword();
 
         if (!authName.matches(USERID_REGEX)) {
-            return ResponseEntity.badRequest()
-                .body("아이디는 최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.");
+            throw new CustomException(INVALID_USERNAME);
         }
 
         if (!password.matches(USERPASSWORD_REGEX)) {
-            return ResponseEntity.badRequest()
-                .body("최소 8자 이상, 15자 이하이며 알파벳 대소문자(az, AZ), 숫자(0~9),특수문자로 구성되어야 합니다.");
+            throw new CustomException(INVALID_PASSWORD);
         }
 
         Optional<User> invalidUser = userRepository.findByUsername(authName);
         if (invalidUser.isPresent()) {
-            return ResponseEntity.badRequest().body("중복된 사용자 ID가 존재합니다.");
+            throw new CustomException(DUPLICATE_USER);
         }
 
         String encodedPassword = passwordEncoder.encode(password);
@@ -70,17 +72,19 @@ public class UserService {
         PasswordHistory ph = new PasswordHistory(encodedPassword, user);
         passwordHistoryRepository.save(ph);
 
-        return ResponseEntity.ok("회원가입 성공");
+        AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
+
+        return ResponseEntity.ok(responseDto);
     }
 
-    public ResponseEntity<String> login(AuthRequestDto loginRequest) {
+    public ResponseEntity<AuthResponseDto> login(AuthRequestDto loginRequest) {
         User user = userRepository.findByUsername(loginRequest.getUsername()).orElse(null);
 
         if (user == null) {
-            return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다.");
+            throw new CustomException(USER_NOT_FOUND);
         }
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.badRequest().body("로그인 실패 : 사용자 비밀번호가 일치하지 않습니다.");
+            throw new CustomException(INCORRECT_PASSWORD);
         }
 
         String accessToken = jwtUtil.createAccessToken(user.getUsername());
@@ -92,49 +96,58 @@ public class UserService {
         headers.set("Authorization", "Bearer " + accessToken);
         headers.set("Refresh-Token", refreshToken);
 
-        return new ResponseEntity<>("로그인 성공 : " + user.getUsername(), headers, HttpStatus.OK);
+        AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
+
+        return new ResponseEntity<>(responseDto,headers,HttpStatus.OK);
     }
 
-    public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
+    public ResponseEntity<AuthResponseDto> logout(UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username).orElse(null);
         if (user == null) {
-            return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다.");
+            throw new CustomException(USER_NOT_FOUND);
         }
 
         user.clearRefreshToken();
         userRepository.save(user);
 
-        return ResponseEntity.ok("로그아웃 성공 : " + username);
+        AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
+
+        return ResponseEntity.ok(responseDto);
     }
 
-    public ResponseEntity<String> withdraw(UserDetailsImpl userDetails) {
+    public ResponseEntity<AuthResponseDto> withdraw(UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username).orElse(null);
 
         if (user == null) {
-            return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다.");
+            throw new CustomException(USER_NOT_FOUND);
         }
 
         if (UserStatus.WITHDRAW == user.getUserStatus()) {
-            return ResponseEntity.badRequest().body("회원탈퇴 실패 : 이미 탈퇴한 회원");
+            throw new CustomException(WITHDRAW_USER);
         }
 
         user.withdraw();
         user.clearRefreshToken();
         userRepository.save(user);
 
-        return ResponseEntity.ok("회원탈퇴 성공");
+        AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
+
+        return ResponseEntity.ok(responseDto);
     }
 
-    public ResponseEntity<String> updatePassword(UpdatePasswordRequestDto requestDto) {
+    public ResponseEntity<AuthResponseDto> updatePassword(UpdatePasswordRequestDto requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElse(null);
 
         if (user == null) {
-            return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다");
+            throw new CustomException(USER_NOT_FOUND);
         }
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(INCORRECT_PASSWORD);
+        }
+        if (!requestDto.getNewpassword().matches(USERPASSWORD_REGEX)) {
+            throw new CustomException(INVALID_PASSWORD);
         }
 
         List<PasswordHistory> passwordHisList = passwordHistoryRepository.findByUserId(
@@ -142,7 +155,7 @@ public class UserService {
 
         for (var ph : passwordHisList) {
             if (passwordEncoder.matches(requestDto.getNewpassword(), ph.getPassword())) {
-                return ResponseEntity.badRequest().body("3회 내 설정한 비밀번호 변경 불가");
+                throw new CustomException(PASSWORD_CHANGE_NOT_ALLOWED);
             }
         }
 
@@ -160,21 +173,22 @@ public class UserService {
         user.updatePassword(encodedNewPassword);
         userRepository.save(user);
 
-        return ResponseEntity.ok("비밀번호 변경 성공");
+        AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
+
+        return ResponseEntity.ok(responseDto);
     }
 
-    public ResponseEntity<String> updateProfile(UserDetailsImpl userDetails,
+    public ResponseEntity<ProfileResponseDto> updateProfile(UserDetailsImpl userDetails,
         UpdateProfileRequestDto requestDto) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElse(null);
 
         if (user == null) {
-            return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다.");
+            throw new CustomException(USER_NOT_FOUND);
         }
 
         String updateName = requestDto.getUsername();
         if (updateName.matches(USERID_REGEX)) {
-            return ResponseEntity.badRequest()
-                .body("아이디는 최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.");
+            throw new CustomException(INVALID_USERNAME);
         }
 
         String updateIntroduction = requestDto.getIntroduction();
@@ -192,25 +206,28 @@ public class UserService {
         headers.set("Authorization", "Bearer " + accessToken);
         headers.set("Refresh-Token", refreshToken);
 
-        return new ResponseEntity<>("프로필 변경 성공 : " + updateName, headers, HttpStatus.OK);
+        ProfileResponseDto responseDto = new ProfileResponseDto(user.getId(), user.getUsername(),
+            user.getIntroduction());
+
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
     public ResponseEntity<String> refresh(RefreshTokenRequestDto requestDto) {
         String refreshToken = requestDto.getRefreshToken();
 
         if (!jwtUtil.validateToken(refreshToken)) {
-            return ResponseEntity.badRequest().body("유효하지않은 Refresh Token입니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
 
         String username = jwtUtil.getUsernameFromToken(refreshToken);
         User user = userRepository.findByUsername(username).orElse(null);
 
         if (user == null) {
-            return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다.");
+            throw new CustomException(USER_NOT_FOUND);
         }
 
         if (!refreshToken.equals(user.getRefreshToken())) {
-            return ResponseEntity.badRequest().body("Refresh Token이 일치하지 않습니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
 
         // AccessToken 재발급
@@ -223,9 +240,39 @@ public class UserService {
 
 
     public User findUserById(Long userId) {
-        User user = userRepository.findById(userId)
+        return userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
-        return user;
+    }
 
+    public ResponseEntity<ProfileResponseDto> getProfile(Long id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+
+        Long userId = user.getId();
+        String username = user.getUsername();
+        String introduction = user.getIntroduction();
+
+        ProfileResponseDto responseDto = new ProfileResponseDto(userId, username, introduction);
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    public ResponseEntity<List<ProfileResponseDto>> getProfiles() {
+        List<User> userList = userRepository.findAll();
+
+        if (userList.isEmpty()) {
+            return ResponseEntity.ok(null);
+        }
+
+        List<ProfileResponseDto> responseDtoList = new ArrayList<>();
+        for (User user : userList) {
+            Long userid = user.getId();
+            String username = user.getUsername();
+            String introduction = user.getIntroduction();
+
+            responseDtoList.add(new ProfileResponseDto(userid, username, introduction));
+        }
+
+        return ResponseEntity.ok().body(responseDtoList);
     }
 }
