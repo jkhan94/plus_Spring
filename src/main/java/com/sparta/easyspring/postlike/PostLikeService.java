@@ -31,7 +31,7 @@ public class PostLikeService {
             throw new CustomException(CANNOT_LIKE_OWN_CONTENT);
         }
 
-        PostLike postLike = new PostLike(user, post);
+        com.sparta.easyspring.postlike.PostLike postLike = new com.sparta.easyspring.postlike.PostLike(user, post);
         postLikeRepository.save(postLike);
 
         postService.increaseLikes(postId);
@@ -44,7 +44,7 @@ public class PostLikeService {
         User user = userService.findUserById(userId);
         Post post = postService.findPostbyId(postId);
 
-        PostLike postLike = postLikeRepository.findByUserAndPost(user, post);
+        com.sparta.easyspring.postlike.PostLike postLike = postLikeRepository.findByUserAndPost(user, post);
 
         if (postLike == null) {
             throw new CustomException(LIKE_NOT_FOUND);

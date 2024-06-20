@@ -1,4 +1,4 @@
-package com.sparta.easyspring.commentLike;
+package com.sparta.easyspring.commentlike;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.service.UserService;
