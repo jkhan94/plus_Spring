@@ -1,5 +1,7 @@
 package com.sparta.easyspring.post;
 
+import com.sparta.easyspring.auth.entity.User;
+import com.sparta.easyspring.exception.ErrorEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +17,8 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
-    public PostResponseDto addPost(PostRequestDto requestDto) {
-        Post post = new Post(requestDto);
+    public PostResponseDto addPost(PostRequestDto requestDto, User user) {
+        Post post = new Post(requestDto,user);
         postRepository.save(post);
         return new PostResponseDto(post);
     }
@@ -31,24 +33,31 @@ public class PostService {
 
     public PostResponseDto getPost(Long postId) {
         Post post = findPostbyId(postId);
-        return new PostResponseDto(post);
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return postResponseDto;
     }
 
-    public PostResponseDto editPost(Long postId, PostRequestDto requestDto) {
+    public PostResponseDto editPost(Long postId, PostRequestDto requestDto, User user) {
         Post post = findPostbyId(postId);
+        if(!post.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException(ErrorEnum.INCORRECT_USER.getMsg());
+        }
         post.update(requestDto);
         postRepository.save(post);
         return new PostResponseDto(post);
     }
 
-    public void deletePost(Long postId) {
+    public void deletePost(Long postId, User user) {
         Post post = findPostbyId(postId);
+        if(!post.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException(ErrorEnum.INCORRECT_USER.getMsg());
+        }
         postRepository.delete(post);
     }
 
     public Post findPostbyId(Long postId){
         Post post = postRepository.findById(postId).orElseThrow(
-                ()->new IllegalArgumentException("찾을 수 없는 포스트 입니다.")
+                ()->new IllegalArgumentException(ErrorEnum.POST_NOT_FOUND.getMsg())
         );
         return post;
     }
