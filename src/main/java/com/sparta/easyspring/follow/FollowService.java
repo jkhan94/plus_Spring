@@ -12,7 +12,7 @@ public class FollowService {
     private final UserService userService;
 
     public void addFollow(Long followingId, User user) {
-        User followingUser = userService.findUserById(followingId);
+        User followingUser = userService.findById(followingId);
         Follow checkFollow = findFollowById(followingUser.getId(),user);
         if(checkFollow != null){
             throw new IllegalArgumentException("이미 팔로우된 상태입니다.");
@@ -22,7 +22,7 @@ public class FollowService {
     }
 
     public void deleteFollow(Long followingId, User user) {
-        User followingUser = userService.findUserById(followingId);
+        User followingUser = userService.findById(followingId);
         Follow checkFollow = findFollowById(followingUser.getId(),user);
         if(checkFollow == null){
             throw new IllegalArgumentException("취소할 팔로우가 없습니다.");
