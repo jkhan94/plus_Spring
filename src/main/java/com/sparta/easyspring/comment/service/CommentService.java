@@ -11,7 +11,6 @@ import com.sparta.easyspring.exception.ErrorEnum;
 import com.sparta.easyspring.post.Post;
 import com.sparta.easyspring.post.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,5 +74,24 @@ public class CommentService {
     private CommentResponseDto entityToDto(Comment comment) {
         return new CommentResponseDto(comment.getId(), comment.getComment(), comment.getLikes(),
                 comment.getUser().getId(), comment.getPost().getId(), comment.getCreatedAt(), comment.getModifiedAt());
+    }
+
+    public Comment findCommentbyId(Long commentId){
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                ()->new IllegalArgumentException(ErrorEnum.COMMENT_NOT_FOUND.getMsg())
+        );
+        return comment;
+    }
+
+    @Transactional
+    public void increaseLikes(Long commentId){
+        Comment comment = findCommentbyId(commentId);
+        comment.increaseLikes();
+    }
+
+    @Transactional
+    public void decreaseLikes(Long commentId){
+        Comment comment = findCommentbyId(commentId);
+        comment.decreaseLikes();
     }
 }

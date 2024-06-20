@@ -4,7 +4,6 @@ import com.sparta.easyspring.TimeStamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.entity.Comment;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "commentlikes")
 @NoArgsConstructor
-@AllArgsConstructor
 public class CommentLike extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
