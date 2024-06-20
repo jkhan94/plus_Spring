@@ -1,18 +1,23 @@
 package com.sparta.easyspring.comment.entity;
 
-
-import com.sparta.easyspring.timestamp.TimeStamp;
-
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.post.entity.Post;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import com.sparta.easyspring.timestamp.TimeStamp;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "comment")
@@ -49,9 +54,9 @@ public class Comment extends TimeStamp {
     }
 
     public void increaseLikes() {
-        this.likes++;
+        this.likes += 1L;
     }
     public void decreaseLikes() {
-        this.likes--;
+        this.likes -= 1L;
     }
 }

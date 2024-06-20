@@ -75,4 +75,23 @@ public class CommentService {
         return new CommentResponseDto(comment.getId(), comment.getComment(), comment.getLikes(),
                 comment.getUser().getId(), comment.getPost().getId(), comment.getCreatedAt(), comment.getModifiedAt());
     }
+
+    public Comment findCommentbyId(Long commentId){
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                ()->new IllegalArgumentException(ErrorEnum.COMMENT_NOT_FOUND.getMsg())
+        );
+        return comment;
+    }
+
+    @Transactional
+    public void increaseLikes(Long commentId){
+        Comment comment = findCommentbyId(commentId);
+        comment.increaseLikes();
+    }
+
+    @Transactional
+    public void decreaseLikes(Long commentId){
+        Comment comment = findCommentbyId(commentId);
+        comment.decreaseLikes();
+    }
 }

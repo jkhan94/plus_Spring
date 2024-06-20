@@ -1,6 +1,5 @@
 package com.sparta.easyspring.commentlike.controller;
 
-
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.commentlike.service.CommentLikeService;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 댓글 좋아요, 좋아요 해제 구현하기
- * */
+
 @RestController
 @RequiredArgsConstructor
 public class CommentLikeController {
