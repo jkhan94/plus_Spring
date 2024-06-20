@@ -20,7 +20,7 @@ public class PostLikeService {
     private final UserService userService;
 
     @Transactional
-    public PostLikeResponseDto likePost(long userId, long postId) {
+    public String likePost(long userId, long postId) {
         // TODO userID 있는지 -> USER_NOT_FOUND
         User user = userService.findUserById(userId);
 
@@ -42,28 +42,29 @@ public class PostLikeService {
 
         postService.increaseLikes(postId);
 
-        return new PostLikeResponseDto("게시글 좋아요 완료");
+        return "게시글 좋아요 완료";
     }
 
     @Transactional
-    public PostLikeResponseDto unlikePost(long userId, long postId) {
+    public String unlikePost(long userId, long postId) {
         // TODO userID 있는지 -> USER_NOT_FOUND
         User user = userService.findUserById(userId);
 
         // TODO postID 있는지 -> POST_NOT_FOUND
         Post post = postService.findPostbyId(postId);
 
+        PostLike postLike = postLikeRepository.findByUserAndPost(user, post);
+
         // TODO 테이블에 userId, postId로 등록X -> LIKE_NOT_FOUND
-        if (postLikeRepository.findByUserAndPost(user, post)==null) {
+        if (postLike == null) {
             throw new CustomException(LIKE_NOT_FOUND);
         }
 
         // 좋아요 해제
-        PostLike postLike = new PostLike(user, post);
         postLikeRepository.delete(postLike);
 
         postService.decreaseLikes(postId);
 
-        return new PostLikeResponseDto("게시글 좋아요 해제 완료");
+        return "게시글 좋아요 해제 완료";
     }
 }
