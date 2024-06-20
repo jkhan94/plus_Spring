@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.sparta.easyspring.postlike.PostLikeResponseDto;
 
 import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_AUTHENTICATED;
 
@@ -29,25 +28,25 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @PostMapping("/like/post/{userId}/{postId}")
-    public ResponseEntity<PostLikeResponseDto> likePost(@PathVariable long userId, @PathVariable long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<String> likePost(@PathVariable long userId, @PathVariable long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // TODO PathVariable로 받아온 userID = 인증객체 userId 인지 -> USER_NOT_AUTHENTICATED
         if (userId != userDetails.getUser().getId()) {
             throw new CustomException(USER_NOT_AUTHENTICATED);
         }
 
-        PostLikeResponseDto responseDto = postLikeService.likePost(userId, postId);
-        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        String successMsg = postLikeService.likePost(userId, postId);
+        return ResponseEntity.status(HttpStatus.OK).body(successMsg);
     }
 
     @DeleteMapping("/unlike/post/{userId}/{postId}")
-    public ResponseEntity<PostLikeResponseDto> unlikePost(@PathVariable long userId, @PathVariable long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<String> unlikePost(@PathVariable long userId, @PathVariable long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // TODO PathVariable로 받아온 userID = 인증객체 userId 인지 -> USER_NOT_AUTHENTICATED
         if (userId != userDetails.getUser().getId()) {
             throw new CustomException(USER_NOT_AUTHENTICATED);
         }
 
-        PostLikeResponseDto responseDto = postLikeService.unlikePost(userId, postId);
-        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        String successMsg = postLikeService.unlikePost(userId, postId);
+        return ResponseEntity.status(HttpStatus.OK).body(successMsg);
     }
 
 }
