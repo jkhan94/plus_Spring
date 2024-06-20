@@ -11,12 +11,16 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import java.util.Optional;
+
+import com.sparta.easyspring.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -42,12 +46,12 @@ public class UserService {
 
         if (!authName.matches(USERID_REGEX)) {
             return ResponseEntity.badRequest()
-                .body("아이디는 최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.");
+                    .body("아이디는 최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.");
         }
 
         if (!password.matches(USERPASSWORD_REGEX)) {
             return ResponseEntity.badRequest()
-                .body("최소 8자 이상, 15자 이하이며 알파벳 대소문자(az, AZ), 숫자(0~9),특수문자로 구성되어야 합니다.");
+                    .body("최소 8자 이상, 15자 이하이며 알파벳 대소문자(az, AZ), 숫자(0~9),특수문자로 구성되어야 합니다.");
         }
 
         Optional<User> invalidUser = userRepository.findByUsername(authName);
@@ -136,7 +140,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> updateProfile(UserDetailsImpl userDetails,
-        UpdateProfileRequestDto requestDto) {
+                                                UpdateProfileRequestDto requestDto) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElse(null);
 
         if (user == null) {
@@ -146,7 +150,7 @@ public class UserService {
         String updateName = requestDto.getUsername();
         if (updateName.matches(USERID_REGEX)) {
             return ResponseEntity.badRequest()
-                .body("아이디는 최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.");
+                    .body("아이디는 최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)로 구성되어야 합니다.");
         }
 
         String updateIntroduction = requestDto.getIntroduction();
@@ -191,5 +195,10 @@ public class UserService {
         headers.set("Authorization", "Bearer " + newAccessToken);
 
         return new ResponseEntity<>("Refresh Token 재발급", headers, HttpStatus.OK);
+    }
+
+    public User findUserById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        return user;
     }
 }
