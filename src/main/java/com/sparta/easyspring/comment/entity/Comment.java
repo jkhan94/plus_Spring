@@ -49,9 +49,9 @@ public class Comment extends TimeStamp {
     }
 
     public void increaseLikes() {
-        this.likes++;
+        this.likes += 1L;
     }
     public void decreaseLikes() {
-        this.likes--;
+        this.likes -= 1L;
     }
 }
