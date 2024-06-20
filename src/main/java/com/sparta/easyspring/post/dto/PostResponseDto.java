@@ -1,6 +1,7 @@
-package com.sparta.easyspring.post;
+package com.sparta.easyspring.post.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sparta.easyspring.post.entity.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

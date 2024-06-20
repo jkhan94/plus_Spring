@@ -1,11 +1,14 @@
-package com.sparta.easyspring.post;
+package com.sparta.easyspring.post.service;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.ErrorEnum;
-import com.sparta.easyspring.follow.Follow;
-import com.sparta.easyspring.follow.FollowService;
+import com.sparta.easyspring.follow.entity.Follow;
+import com.sparta.easyspring.follow.service.FollowService;
+import com.sparta.easyspring.post.dto.PostRequestDto;
+import com.sparta.easyspring.post.dto.PostResponseDto;
+import com.sparta.easyspring.post.entity.Post;
+import com.sparta.easyspring.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

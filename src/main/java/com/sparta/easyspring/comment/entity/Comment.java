@@ -6,7 +6,7 @@ import com.sparta.easyspring.TimeStamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.commentLike.CommentLike;
-import com.sparta.easyspring.post.Post;
+import com.sparta.easyspring.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,9 @@
-package com.sparta.easyspring.follow;
+package com.sparta.easyspring.follow.service;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.service.UserService;
+import com.sparta.easyspring.follow.repository.FollowRepository;
+import com.sparta.easyspring.follow.entity.Follow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

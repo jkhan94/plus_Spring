@@ -1,4 +1,4 @@
-package com.sparta.easyspring.follow;
+package com.sparta.easyspring.follow.entity;
 
 import com.sparta.easyspring.TimeStamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;

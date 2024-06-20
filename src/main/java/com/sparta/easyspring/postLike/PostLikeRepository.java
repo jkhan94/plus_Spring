@@ -1,7 +1,7 @@
 package com.sparta.easyspring.postlike;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.post.Post;
+import com.sparta.easyspring.post.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {

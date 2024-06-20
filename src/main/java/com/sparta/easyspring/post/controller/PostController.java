@@ -1,6 +1,9 @@
-package com.sparta.easyspring.post;
+package com.sparta.easyspring.post.controller;
 
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
+import com.sparta.easyspring.post.dto.PostRequestDto;
+import com.sparta.easyspring.post.dto.PostResponseDto;
+import com.sparta.easyspring.post.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
