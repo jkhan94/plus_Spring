@@ -11,12 +11,16 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import java.util.Optional;
+
+import com.sparta.easyspring.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
