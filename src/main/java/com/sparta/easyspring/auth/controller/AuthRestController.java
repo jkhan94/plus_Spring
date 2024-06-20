@@ -1,6 +1,7 @@
-package com.sparta.easyspring.auth.authcontroller;
+package com.sparta.easyspring.auth.controller;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
+import com.sparta.easyspring.auth.dto.AuthResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
 import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
@@ -24,37 +25,30 @@ public class AuthRestController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody AuthRequestDto requestDto) {
+    public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthRequestDto requestDto) {
         return userService.signup(requestDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequestDto requestDto) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto requestDto) {
         return userService.login(requestDto);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<AuthResponseDto> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.logout(userDetails);
     }
 
     @DeleteMapping("/withdraw")
-    public ResponseEntity<String> withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<AuthResponseDto> withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.withdraw(userDetails);
     }
 
     @PutMapping("/update/password")
-    public ResponseEntity<String> updatePassword(
+    public ResponseEntity<AuthResponseDto> updatePassword(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody UpdatePasswordRequestDto requestDto) {
         return userService.updatePassword(requestDto);
-    }
-
-    @PutMapping("/update/profile")
-    public ResponseEntity<String> updateProfile(
-        @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody
-    UpdateProfileRequestDto requestDto) {
-        return userService.updateProfile(userDetails, requestDto);
     }
 
     @PostMapping("/refresh")
