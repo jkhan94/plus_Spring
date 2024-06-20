@@ -21,22 +21,16 @@ public class PostLikeService {
 
     @Transactional
     public String likePost(long userId, long postId) {
-        // TODO userID 있는지 -> USER_NOT_FOUND
         User user = userService.findUserById(userId);
-
-        // TODO postID 있는지 -> POST_NOT_FOUND
         Post post = postService.findPostbyId(postId);
 
-        // TODO 테이블에 userId, postId로 등록되어 있음 -> DUPLICATE_LIKE
         if (postLikeRepository.findByUserAndPost(user, post) != null) {
             throw new CustomException(DUPLICATE_LIKE);
         }
-        // TODO 테이블에는 없지만 postID의 userID가 좋아요 누른 userID와 동일 -> CANNOT_LIKE_OWN_CONTENT
         if (post.getUser().getId() == userId) {
             throw new CustomException(CANNOT_LIKE_OWN_CONTENT);
         }
 
-        // 좋아요 등록
         PostLike postLike = new PostLike(user, post);
         postLikeRepository.save(postLike);
 
@@ -47,20 +41,15 @@ public class PostLikeService {
 
     @Transactional
     public String unlikePost(long userId, long postId) {
-        // TODO userID 있는지 -> USER_NOT_FOUND
         User user = userService.findUserById(userId);
-
-        // TODO postID 있는지 -> POST_NOT_FOUND
         Post post = postService.findPostbyId(postId);
 
         PostLike postLike = postLikeRepository.findByUserAndPost(user, post);
 
-        // TODO 테이블에 userId, postId로 등록X -> LIKE_NOT_FOUND
         if (postLike == null) {
             throw new CustomException(LIKE_NOT_FOUND);
         }
 
-        // 좋아요 해제
         postLikeRepository.delete(postLike);
 
         postService.decreaseLikes(postId);

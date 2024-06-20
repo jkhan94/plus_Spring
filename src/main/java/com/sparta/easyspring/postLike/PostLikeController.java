@@ -13,14 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_AUTHENTICATED;
 
-/*
-* 	@PostMapping
-	public ResponseEntity<TodoResponseDTO> postTodo(@RequestBody TodoRequestDTO todoRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-		TodoResponseDTO responseDTO = todoService.createTodo(todoRequestDTO, userDetails.getUser());
-        userDetails.getUser().getId();
-		return ResponseEntity.status(201).body(responseDTO);
-	}
-	* */
 @RestController
 @RequiredArgsConstructor
 public class PostLikeController {
@@ -29,7 +21,6 @@ public class PostLikeController {
 
     @PostMapping("/like/post/{userId}/{postId}")
     public ResponseEntity<String> likePost(@PathVariable long userId, @PathVariable long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        // TODO PathVariable로 받아온 userID = 인증객체 userId 인지 -> USER_NOT_AUTHENTICATED
         if (userId != userDetails.getUser().getId()) {
             throw new CustomException(USER_NOT_AUTHENTICATED);
         }
@@ -40,7 +31,6 @@ public class PostLikeController {
 
     @DeleteMapping("/unlike/post/{userId}/{postId}")
     public ResponseEntity<String> unlikePost(@PathVariable long userId, @PathVariable long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        // TODO PathVariable로 받아온 userID = 인증객체 userId 인지 -> USER_NOT_AUTHENTICATED
         if (userId != userDetails.getUser().getId()) {
             throw new CustomException(USER_NOT_AUTHENTICATED);
         }
