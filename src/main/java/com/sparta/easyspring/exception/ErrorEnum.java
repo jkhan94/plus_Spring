@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 public enum ErrorEnum {
     // user
     USER_NOT_FOUND(400, "등록되지 않은 사용자입니다."),
+    INCORRECT_USER(400,"사용자가 동일하지 않습니다."),
 
     // post
     POST_NOT_FOUND(400, "등록되지 않은 게시글입니다."),
+
 
     // comment
     COMMENT_NOT_FOUND(400, "등록되지 않은 댓글입니다."),
