@@ -1,4 +1,4 @@
-package com.sparta.easyspring.post;
+package com.sparta.easyspring.post.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

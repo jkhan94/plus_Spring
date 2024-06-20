@@ -1,8 +1,10 @@
-package com.sparta.easyspring.commentlike;
+
+package com.sparta.easyspring.commentlike.repository;
 
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.entity.Comment;
+import com.sparta.easyspring.commentlike.entity.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

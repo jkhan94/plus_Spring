@@ -1,6 +1,7 @@
-package com.sparta.easyspring.follow;
+package com.sparta.easyspring.follow.controller;
 
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
+import com.sparta.easyspring.follow.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
