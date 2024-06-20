@@ -199,12 +199,6 @@ public class UserService {
         return new ResponseEntity<>("Refresh Token 재발급", headers, HttpStatus.OK);
     }
 
-    public User findById(Long id){
-        return userRepository.findById(id).orElseThrow(
-                ()-> new IllegalArgumentException(ErrorEnum.USER_NOT_FOUND.getMsg())
-        );
-    }
-
     public User findUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
         return user;
