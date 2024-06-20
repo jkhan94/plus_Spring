@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class AuthRequestDto {
+public class UpdateProfileRequestDto {
     private String username;
-    private String password;
+    private String introduction;
 }
