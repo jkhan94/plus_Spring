@@ -1,6 +1,8 @@
 package com.sparta.easyspring.auth.entity;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,6 +41,21 @@ public class User {
 
     @Column
     private String refreshToken;
+
+    @Column
+    private String introduction;
+
+
+    public void updateUsername(String username){
+        this.username = username;
+    }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateIntroduction(String introduction){
+        this.introduction = introduction;
+    }
 
     public void clearRefreshToken() {
         this.refreshToken = null;

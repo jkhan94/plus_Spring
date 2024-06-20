@@ -1,5 +1,6 @@
 package com.sparta.easyspring.auth.security;
 
+import com.sparta.easyspring.auth.entity.UserStatus;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,8 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = null;
         String token = null;
 
-
-
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             log.info("토큰 유효성 검증");
             log.info("authorizationHeader :"+authorizationHeader);
@@ -43,9 +42,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         log.info("사용자 정보 검증");
         // 사용자 이름 존재, 현재 SecurityContextHolder에 인증 정보가 없는 경우
-        // statless상태기 때문에 HTTP요청마다 SecurityContextHolder에 인증 정보를 저장해 줘야 됨.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetailsImpl userDetailsImpl = this.userDetailsService.loadUserByUsername(username);
+
+            if(userDetailsImpl.getUser().getUserStatus() == UserStatus.WITHDRAW)
+            {
+                log.info("탈퇴한 유저");
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("이미 탈퇴한 유저입니다.");
+            }
 
             log.info("토큰 유효성 재 검증");
             if(jwtUtil.validateToken(token,userDetailsImpl)){
