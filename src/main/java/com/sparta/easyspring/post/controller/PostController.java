@@ -1,6 +1,9 @@
-package com.sparta.easyspring.post;
+package com.sparta.easyspring.post.controller;
 
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
+import com.sparta.easyspring.post.dto.PostRequestDto;
+import com.sparta.easyspring.post.dto.PostResponseDto;
+import com.sparta.easyspring.post.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +54,13 @@ public class PostController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("삭제가 완료되었습니다.");
+    }
+    @GetMapping("/follow/{followingId}")
+    public ResponseEntity<List<PostResponseDto>> getAllFollowPost(@PathVariable(name = "followingId") Long followingId,
+                                                                  @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                  @RequestParam(value = "page",defaultValue = "1") int page,
+                                                                  @RequestParam(value = "sortBy",defaultValue = "createdAt") String sortBy){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postService.getAllFollowPost(followingId,userDetails.getUser(),page-1,sortBy));
     }
 }

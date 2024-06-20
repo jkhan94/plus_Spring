@@ -1,8 +1,9 @@
-package com.sparta.easyspring.post;
+package com.sparta.easyspring.post.entity;
 
 import com.sparta.easyspring.timestamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.entity.Comment;
+import com.sparta.easyspring.post.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class Post extends TimeStamp {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> commentList = new ArrayList<>();
 
-    public Post(PostRequestDto requestDto,User user) {
+    public Post(PostRequestDto requestDto, User user) {
         this.title= requestDto.getTitle();
         this.contents= requestDto.getContents();
         this.likes=0L;
