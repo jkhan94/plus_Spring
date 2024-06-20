@@ -6,8 +6,11 @@ import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
+import com.sparta.easyspring.exception.CustomException;
+import com.sparta.easyspring.exception.ErrorEnum;
 import com.sparta.easyspring.post.Post;
 import com.sparta.easyspring.post.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,13 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
-
-    @Autowired
-    private PostService postService;
+    private final CommentRepository commentRepository;
+    private final PostService postService;
 
     public CommentResponseDto createNewComment(Long postId, CommentRequestDto requestDto) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -61,7 +62,7 @@ public class CommentService {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User loginUser = userDetails.getUser();
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글 존재 하지 않음"));
+                .orElseThrow(() -> new CustomException(ErrorEnum.COMMENT_NOT_FOUND));
 
         if (!comment.getUser().getId().equals(loginUser.getId())) {
             throw new IllegalArgumentException("댓글 작성자가 아님");
