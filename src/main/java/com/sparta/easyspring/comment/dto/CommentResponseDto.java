@@ -1,7 +1,10 @@
 package com.sparta.easyspring.comment.dto;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class CommentResponseDto {
     private Long id;
     private String comment;
@@ -11,9 +14,6 @@ public class CommentResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public CommentResponseDto() {
-
-    }
 
     public CommentResponseDto(Long id, String comment, Long likes, Long userId, Long postId, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
