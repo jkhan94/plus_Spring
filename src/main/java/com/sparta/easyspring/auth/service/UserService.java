@@ -1,6 +1,13 @@
 package com.sparta.easyspring.auth.service;
 
-import static com.sparta.easyspring.exception.ErrorEnum.*;
+import static com.sparta.easyspring.exception.ErrorEnum.DUPLICATE_USER;
+import static com.sparta.easyspring.exception.ErrorEnum.INCORRECT_PASSWORD;
+import static com.sparta.easyspring.exception.ErrorEnum.INVALID_PASSWORD;
+import static com.sparta.easyspring.exception.ErrorEnum.INVALID_TOKEN;
+import static com.sparta.easyspring.exception.ErrorEnum.INVALID_USERNAME;
+import static com.sparta.easyspring.exception.ErrorEnum.PASSWORD_CHANGE_NOT_ALLOWED;
+import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_FOUND;
+import static com.sparta.easyspring.exception.ErrorEnum.WITHDRAW_USER;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.AuthResponseDto;
@@ -17,7 +24,6 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import com.sparta.easyspring.exception.CustomException;
-import com.sparta.easyspring.exception.ErrorEnum;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -40,13 +46,6 @@ public class UserService {
 
     private final String USERID_REGEX = "^[a-z0-9]{4,10}$";
     private final String USERPASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{}|;:'\",.<>/?]).{8,15}$";
-
-    /**
-     * badRequest리턴값들은 나중에 예외처리로 분리할 예정
-     *
-     * @param signupRequest
-     * @return
-     */
 
     public ResponseEntity<AuthResponseDto> signup(AuthRequestDto signupRequest) {
         String authName = signupRequest.getUsername();
@@ -218,6 +217,7 @@ public class UserService {
         if (!jwtUtil.validateToken(refreshToken)) {
             throw new CustomException(INVALID_TOKEN);
         }
+
 
         String username = jwtUtil.getUsernameFromToken(refreshToken);
         User user = userRepository.findByUsername(username).orElse(null);

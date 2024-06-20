@@ -1,6 +1,7 @@
 package com.sparta.easyspring.auth.entity;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
+import com.sparta.easyspring.timestamp.TimeStamp;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class User {
+public class User extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
