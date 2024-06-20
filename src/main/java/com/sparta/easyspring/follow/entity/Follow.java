@@ -1,6 +1,6 @@
 package com.sparta.easyspring.follow.entity;
 
-import com.sparta.easyspring.TimeStamp.TimeStamp;
+import com.sparta.easyspring.timestamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;

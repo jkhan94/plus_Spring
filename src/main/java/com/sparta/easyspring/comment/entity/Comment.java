@@ -1,11 +1,11 @@
 package com.sparta.easyspring.comment.entity;
 
 
-import com.sparta.easyspring.TimeStamp.TimeStamp;
+import com.sparta.easyspring.timestamp.TimeStamp;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
-import com.sparta.easyspring.commentLike.CommentLike;
+import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;

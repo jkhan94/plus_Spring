@@ -1,7 +1,8 @@
-package com.sparta.easyspring.commentLike;
+package com.sparta.easyspring.commentlike.controller;
 
 
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
+import com.sparta.easyspring.commentlike.service.CommentLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

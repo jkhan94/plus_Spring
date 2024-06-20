@@ -1,7 +1,8 @@
-package com.sparta.easyspring.postlike;
+package com.sparta.easyspring.postlike.controller;
 
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.exception.CustomException;
+import com.sparta.easyspring.postlike.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

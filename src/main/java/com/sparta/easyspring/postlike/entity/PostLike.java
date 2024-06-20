@@ -1,6 +1,6 @@
-package com.sparta.easyspring.postlike;
+package com.sparta.easyspring.postlike.entity;
 
-import com.sparta.easyspring.TimeStamp.TimeStamp;
+import com.sparta.easyspring.timestamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.post.entity.Post;
 import jakarta.persistence.*;

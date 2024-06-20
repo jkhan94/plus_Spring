@@ -1,9 +1,11 @@
-package com.sparta.easyspring.commentLike;
+package com.sparta.easyspring.commentlike.service;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
+import com.sparta.easyspring.commentlike.repository.CommentLikeRepository;
+import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
 import lombok.RequiredArgsConstructor;
