@@ -12,7 +12,9 @@ import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import java.util.Optional;
 
+
 import com.sparta.easyspring.exception.CustomException;
+import com.sparta.easyspring.exception.ErrorEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -198,7 +200,9 @@ public class UserService {
     }
 
     public User findById(Long id){
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException(ErrorEnum.USER_NOT_FOUND.getMsg())
+        );
     }
 
     public User findUserById(Long userId) {
