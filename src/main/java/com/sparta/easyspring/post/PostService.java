@@ -1,7 +1,11 @@
 package com.sparta.easyspring.post;
 
 import com.sparta.easyspring.auth.entity.User;
+import com.sparta.easyspring.auth.security.UserDetailsImpl;
+import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.ErrorEnum;
+import com.sparta.easyspring.follow.Follow;
+import com.sparta.easyspring.follow.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,11 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final UserService userService;
+    private final FollowService followService;
 
     public PostResponseDto addPost(PostRequestDto requestDto, User user) {
         Post post = new Post(requestDto,user);
@@ -54,12 +61,22 @@ public class PostService {
         }
         postRepository.delete(post);
     }
+    public List<PostResponseDto> getAllFollowPost(Long followingId, User user,int page, String sortBy){
+        User checkUser = userService.findUserById(followingId);
+        Follow checkFollow = followService.findFollowById(checkUser.getId(),user);
+        if(checkFollow==null){
+            throw new IllegalArgumentException("해당 사용자를 팔로우하지 않았습니다.");
+        }
+        Sort sort = Sort.by(Sort.Direction.DESC,sortBy);
+        Pageable pageable = PageRequest.of(page,5,sort);
 
-    public Post findPostbyId(Long postId){
-        Post post = postRepository.findById(postId).orElseThrow(
-                ()->new IllegalArgumentException(ErrorEnum.POST_NOT_FOUND.getMsg())
-        );
-        return post;
+        Page<Post> followPostPage = postRepository.findAllByUser(checkUser,pageable);
+        List<PostResponseDto> followPostList = followPostPage
+                .stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+
+        return followPostList;
     }
 
     @Transactional
@@ -72,5 +89,12 @@ public class PostService {
     public void decreaseLikes(Long postId){
         Post post = findPostbyId(postId);
         post.decreaseLikes();
+    }
+
+    public Post findPostbyId(Long postId){
+        Post post = postRepository.findById(postId).orElseThrow(
+                ()->new IllegalArgumentException(ErrorEnum.POST_NOT_FOUND.getMsg())
+        );
+        return post;
     }
 }
