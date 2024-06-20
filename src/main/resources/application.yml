@@ -8,6 +8,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 30MB
 jwt:
   secret:
     key: 79abec74b8e4b896e246892ec48ea1be24d0a913bbd5c71054c156425a22f144
@@ -19,3 +23,15 @@ jwt:
 
 server:
   port: 8080
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: spring-multi-media-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
