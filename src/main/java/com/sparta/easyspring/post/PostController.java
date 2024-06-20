@@ -1,8 +1,10 @@
 package com.sparta.easyspring.post;
 
+import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +19,10 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostResponseDto> addPost(@Valid @RequestBody PostRequestDto requestDto){
+    public ResponseEntity<PostResponseDto> addPost(@Valid @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(postService.addPost(requestDto));
+                .body(postService.addPost(requestDto,userDetails.getUser()));
     }
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPost(@RequestParam(value = "page",defaultValue = "1") int page,
@@ -38,14 +40,14 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> editPost(@PathVariable(name = "postId") Long postId,@RequestBody PostRequestDto requestDto){
+    public ResponseEntity<PostResponseDto> editPost(@PathVariable(name = "postId") Long postId,@RequestBody PostRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(postService.editPost(postId,requestDto));
+                .body(postService.editPost(postId,requestDto,userDetails.getUser()));
     }
     @DeleteMapping("/{postId}")
-    public ResponseEntity<String> deletePost(@PathVariable(name = "postId") Long postId){
-        postService.deletePost(postId);
+    public ResponseEntity<String> deletePost(@PathVariable(name = "postId") Long postId,@AuthenticationPrincipal UserDetailsImpl userDetails){
+        postService.deletePost(postId,userDetails.getUser());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("삭제가 완료되었습니다.");

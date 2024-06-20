@@ -1,10 +1,12 @@
 package com.sparta.easyspring.post;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostResponseDto {
     private Long id;
     private String title;
@@ -19,7 +21,7 @@ public class PostResponseDto {
         this.title= post.getTitle();
         this.contents= post.getContents();
         this.likes= post.getLikes();
-        this.userId= 1L; //post.getUser().getId();
+        this.userId=post.getUser().getId();
         this.createdAt= post.getCreatedAt();
         this.modifiedAt= post.getModifiedAt();
     }
