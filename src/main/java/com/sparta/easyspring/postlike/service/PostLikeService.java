@@ -1,10 +1,12 @@
-package com.sparta.easyspring.postlike;
+package com.sparta.easyspring.postlike.service;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.post.Post;
 import com.sparta.easyspring.post.PostService;
+import com.sparta.easyspring.postlike.entity.PostLike;
+import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.sparta.easyspring.TimeStamp;
+package com.sparta.easyspring.timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
