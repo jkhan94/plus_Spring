@@ -4,12 +4,16 @@ import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
 import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
+import com.sparta.easyspring.auth.entity.PasswordHistory;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.entity.UserStatus;
+import com.sparta.easyspring.auth.repository.PasswordHistoryRepository;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordHistoryRepository passwordHistoryRepository;
     private final JwtUtil jwtUtil;
 
     private final String USERID_REGEX = "^[a-z0-9]{4,10}$";
@@ -58,6 +63,9 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(authName, encodedPassword, UserRoleEnum.USER);
         userRepository.save(user);
+
+        PasswordHistory ph = new PasswordHistory(encodedPassword,user);
+        passwordHistoryRepository.save(ph);
 
         return ResponseEntity.ok("회원가입 성공");
     }
@@ -122,14 +130,32 @@ public class UserService {
         if (user == null) {
             return ResponseEntity.badRequest().body("유저를 찾을 수 없습니다");
         }
-        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(requestDto.getPassword(),user.getPassword())) {
             return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
         }
-        if (passwordEncoder.matches(requestDto.getNewpassword(), user.getPassword())) {
-            return ResponseEntity.badRequest().body("동일한 비밀번호로는 변경할 수 없습니다.");
+
+
+        List<PasswordHistory> passwordHisList = passwordHistoryRepository.findByUserId(
+            user.getId());
+
+        for (var ph : passwordHisList) {
+            if(passwordEncoder.matches(requestDto.getNewpassword(),ph.getPassword())){
+                return ResponseEntity.badRequest().body("3회 내 설정한 비밀번호 변경 불가");
+            }
         }
-        String newPassword = passwordEncoder.encode(requestDto.getNewpassword());
-        user.updatePassword(newPassword);
+
+        if(passwordHisList.size()>=3){
+            PasswordHistory delPassword = passwordHisList.stream()
+                .min(Comparator.comparing(PasswordHistory::getCreatedAt)).orElseThrow();
+            passwordHistoryRepository.delete(delPassword);
+        }
+
+        String encodedNewPassword = passwordEncoder.encode(requestDto.getNewpassword());
+
+        PasswordHistory ph = new PasswordHistory(encodedNewPassword, user);
+        passwordHistoryRepository.save(ph);
+
+        user.updatePassword(encodedNewPassword);
         userRepository.save(user);
 
         return ResponseEntity.ok("비밀번호 변경 성공");
@@ -193,7 +219,7 @@ public class UserService {
         return new ResponseEntity<>("Refresh Token 재발급", headers, HttpStatus.OK);
     }
 
-    public User findById(Long id){
+    public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 }
