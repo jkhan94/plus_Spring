@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class CommentService {
         return commentResponseDtoList;
     }
 
+    @Transactional
     public CommentResponseDto updateExistingComment(Long commentId, CommentRequestDto requestDto) {
         Comment existingComment = getAuthorizedComment(commentId);
         existingComment.editComment(requestDto);
