@@ -1,15 +1,13 @@
 package com.sparta.easyspring.auth.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.AuthResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
-import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.service.KakaoService;
+import com.sparta.easyspring.auth.service.NaverService;
 import com.sparta.easyspring.auth.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +27,7 @@ public class AuthRestController {
 
     private final UserService userService;
     private final KakaoService kakaoService;
+    private final NaverService naverService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthRequestDto requestDto) {
@@ -63,8 +62,12 @@ public class AuthRestController {
     }
 
     @GetMapping("/login/kakao")
-    public ResponseEntity<AuthResponseDto> kakaoLogin(@RequestParam String code,
-        HttpServletResponse response) throws Exception {
-        return kakaoService.kakaoLogin(code,response);
+    public ResponseEntity<AuthResponseDto> kakaoLogin(@RequestParam String code) throws Exception {
+        return kakaoService.login(code);
+    }
+
+    @GetMapping("/login/naver")
+    public ResponseEntity<AuthResponseDto> naverLogin(@RequestParam String code) throws Exception{
+        return naverService.login(code);
     }
 }
