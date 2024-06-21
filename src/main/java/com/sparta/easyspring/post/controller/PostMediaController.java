@@ -28,10 +28,6 @@ public class PostMediaController {
 
     @PostMapping("/{postId}/media")
     public ResponseEntity<?> uploadFiles(@RequestPart("files") List<MultipartFile> files, @PathVariable(name = "postId") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (files.size() > 5) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("최대 5개까지의 파일 업로드가 가능합니다.");
-        }
-
         try {
             List<Map.Entry<String, String>> fileData = files.stream()
                     .map(file -> {
