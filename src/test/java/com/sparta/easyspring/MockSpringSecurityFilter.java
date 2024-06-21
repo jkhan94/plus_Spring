@@ -1,4 +1,4 @@
-package com.sparta.easyspring.postlike.controller;
+package com.sparta.easyspring;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
