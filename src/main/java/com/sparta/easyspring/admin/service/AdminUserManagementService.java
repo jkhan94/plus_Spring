@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminUserManagementService {
 
     private final UserRepository userRepository;
 
