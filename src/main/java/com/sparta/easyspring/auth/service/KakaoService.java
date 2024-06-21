@@ -10,9 +10,11 @@ import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +33,13 @@ public class KakaoService {
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String CLIENT_ID;
 
-    public ResponseEntity<AuthResponseDto> kakaoLogin(String code, HttpServletResponse response)
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private String REDIRECT_URI;
+
+    public ResponseEntity<AuthResponseDto> kakaoLogin(String code)
         throws Exception {
 
         // 엑세스 토큰 요청
@@ -90,8 +97,8 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "419ee5c620a6a49461823b6ce62866e3");
-        body.add("redirect_uri", "http://localhost:8080/api/auth/login/kakao");
+        body.add("client_id", CLIENT_ID);
+        body.add("redirect_uri", REDIRECT_URI);
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity
