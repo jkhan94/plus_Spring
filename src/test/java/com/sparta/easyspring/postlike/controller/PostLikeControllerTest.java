@@ -1,12 +1,12 @@
 package com.sparta.easyspring.postlike.controller;
 
-import com.sparta.easyspring.MockSpringSecurityFilter;
 import com.sparta.easyspring.auth.config.SecurityConfig;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
+import com.sparta.easyspring.postlike.MockTestDataSetup;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import com.sparta.easyspring.postlike.service.PostLikeService;
 import org.junit.jupiter.api.BeforeAll;
@@ -77,15 +77,8 @@ class PostLikeControllerTest {
 
     // 가짜 유저와 가짜 인증 객체 생성
     private static void mockUserSetup() {
-        // Mock 테스트 유져 생성
-        long TEST_USER_ID = 1L;
-        String TEST_USER_NAME = "username";
-        String TEST_USER_PASSWORD = "password";
-        User TEST_USER = new User();
-        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
-        ReflectionTestUtils.setField(TEST_USER, "username", TEST_USER_NAME);
-        ReflectionTestUtils.setField(TEST_USER, "password", TEST_USER_PASSWORD);
-        ReflectionTestUtils.setField(TEST_USER, "userRole", UserRoleEnum.USER);
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
+
         UserDetailsImpl testUserDetails = new UserDetailsImpl(TEST_USER);
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
     }
@@ -120,7 +113,7 @@ class PostLikeControllerTest {
 
 
     @Test
-    @DisplayName("실패 : 인증되지 않은 사용자")
+    @DisplayName("실패 : 좋아요 - 인증되지 않은 사용자")
     void likePostException() throws Exception {
         // given
         long postId = 1L;
@@ -165,7 +158,7 @@ class PostLikeControllerTest {
 
 
     @Test
-    @DisplayName("실패 : 인증되지 않은 사용자")
+    @DisplayName("실패 : 좋아요 해제 - 인증되지 않은 사용자")
     void unlikePostException() throws Exception {
         // given
         long postId = 1L;

@@ -5,6 +5,7 @@ import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
+import com.sparta.easyspring.postlike.MockTestDataSetup;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,16 +34,10 @@ class PostLikeRepositoryTest {
     @DisplayName("성공: 포스트, 사용자로 좋아요한 포스트 찾기")
     void findByUserAndPost() {
         // given
-        String TEST_USER_NAME = "username";
-        String TEST_USER_PASSWORD = "password";
-        User TEST_USER = new User(TEST_USER_NAME, TEST_USER_PASSWORD, UserRoleEnum.USER);
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
         userRepository.save(TEST_USER);
 
-        Post TEST_POST = new Post();
-        ReflectionTestUtils.setField(TEST_POST,"title","title");
-        ReflectionTestUtils.setField(TEST_POST,"contents","contents");
-        ReflectionTestUtils.setField(TEST_POST,"likes",1L);
-        ReflectionTestUtils.setField(TEST_POST,"user" ,TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
         postRepository.save(TEST_POST);
 
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);

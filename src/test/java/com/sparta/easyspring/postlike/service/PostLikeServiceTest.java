@@ -6,6 +6,7 @@ import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
+import com.sparta.easyspring.postlike.MockTestDataSetup;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,48 +42,12 @@ class PostLikeServiceTest {
     private static User ANOTHER_USER;
     private static Post TEST_POST;
 
-    private static User mockTestUserSetup() {
-        long TEST_USER_ID = 1L;
-        String TEST_USER_NAME = "username";
-        String TEST_USER_PASSWORD = "password";
-        User TEST_USER = new User();
-        ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
-        ReflectionTestUtils.setField(TEST_USER, "username", TEST_USER_NAME);
-        ReflectionTestUtils.setField(TEST_USER, "password", TEST_USER_PASSWORD);
-        ReflectionTestUtils.setField(TEST_USER, "userRole", UserRoleEnum.USER);
-        return TEST_USER;
-    }
 
-    private static User mockAnotherUserSetup() {
-        long ANOTHER_USER_ID = 2L;
-        String Another_USER_NAME = "username";
-        String ANOTHER_USER_PASSWORD = "password";
-        User ANOTHER_USER = new User();
-        ReflectionTestUtils.setField(ANOTHER_USER, "id", ANOTHER_USER_ID);
-        ReflectionTestUtils.setField(ANOTHER_USER, "username", Another_USER_NAME);
-        ReflectionTestUtils.setField(ANOTHER_USER, "password", ANOTHER_USER_PASSWORD);
-        ReflectionTestUtils.setField(ANOTHER_USER, "userRole", UserRoleEnum.USER);
-        return ANOTHER_USER;
-    }
-
-    private static Post mockTestPostSetup(User user) {
-        long TEST_POST_ID = 1L;
-        String TEST_POST_TITLE = "post title";
-        String TEST_POST_CONTENTS = "post contents";
-        long TEST_POST_LIKES = 1L;
-        Post TEST_POST = new Post();
-        ReflectionTestUtils.setField(TEST_POST, "id", TEST_POST_ID);
-        ReflectionTestUtils.setField(TEST_POST, "title", TEST_POST_TITLE);
-        ReflectionTestUtils.setField(TEST_POST, "contents", TEST_POST_CONTENTS);
-        ReflectionTestUtils.setField(TEST_POST, "likes", TEST_POST_LIKES);
-        ReflectionTestUtils.setField(TEST_POST, "user", user);
-        return TEST_POST;
-    }
 
     @BeforeEach
     void setUp() {
-        TEST_USER = PostLikeServiceTest.mockTestUserSetup();
-        ANOTHER_USER = PostLikeServiceTest.mockAnotherUserSetup();
+        TEST_USER = MockTestDataSetup.mockTestUserSetup();
+        ANOTHER_USER = MockTestDataSetup.mockAnotherUserSetup();
     }
 
     @Test
@@ -93,7 +58,7 @@ class PostLikeServiceTest {
         long TEST_POST_ID = 1L;
         String expectedMsg = "게시글 좋아요 완료";
 
-        TEST_POST = PostLikeServiceTest.mockTestPostSetup(ANOTHER_USER);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -115,7 +80,7 @@ class PostLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_POST_ID = 1L;
 
-        TEST_POST = PostLikeServiceTest.mockTestPostSetup(TEST_USER);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -134,7 +99,7 @@ class PostLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_POST_ID = 1L;
 
-        Post TEST_POST = PostLikeServiceTest.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -154,7 +119,7 @@ class PostLikeServiceTest {
         long TEST_POST_ID = 1L;
         String expectedMsg = "게시글 좋아요 해제 완료";
 
-        Post TEST_POST = PostLikeServiceTest.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -177,7 +142,7 @@ class PostLikeServiceTest {
         long ANOTHER_USER_ID = 2L;
         long TEST_POST_ID = 1L;
 
-        Post TEST_POST = PostLikeServiceTest.mockTestPostSetup(ANOTHER_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(postService.findPostbyId(TEST_POST_ID)).willReturn(TEST_POST);
