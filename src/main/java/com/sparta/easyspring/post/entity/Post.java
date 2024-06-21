@@ -30,6 +30,8 @@ public class Post extends TimeStamp {
     private User user;
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<PostMedia> postMediaList = new ArrayList<>();
 
     public Post(PostRequestDto requestDto, User user) {
         this.title= requestDto.getTitle();

@@ -1,7 +1,6 @@
 package com.sparta.easyspring.post.entity;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.post.dto.PostMediaRequestDto;
 import com.sparta.easyspring.timestamp.TimeStamp;
 import jakarta.persistence.*;
 import lombok.Getter;

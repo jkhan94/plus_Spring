@@ -2,6 +2,7 @@ package com.sparta.easyspring.post.service;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.post.dto.PostMediaResponseDto;
+import com.sparta.easyspring.post.dto.PostResponseDto;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.entity.PostMedia;
 import com.sparta.easyspring.post.repository.PostMediaRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +54,13 @@ public class PostMediaService {
     }
 
     public List<PostMediaResponseDto> getAllFiles(Long postId) {
-        List<PostMedia> postMediaList = postMediaRepository.findAllByPost(postId);
+        Post post = postService.findPostbyId(postId);
+        List<PostMedia> postMediaList = postMediaRepository.findAllByPost(post);
+        List<PostMediaResponseDto> responseDtos = new ArrayList<>();
+        for (PostMedia postMedia : postMediaList) {
+            PostMediaResponseDto postMediaResponseDto= new PostMediaResponseDto(postMedia);
+            responseDtos.add(postMediaResponseDto);
+        }
+        return responseDtos;
     }
 }
