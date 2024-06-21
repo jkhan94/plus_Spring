@@ -1,6 +1,7 @@
 package com.sparta.easyspring.admin.controller;
 
 import com.sparta.easyspring.admin.dto.AllOfUserResponseDto;
+import com.sparta.easyspring.admin.dto.PostWithStatusRequestDto;
 import com.sparta.easyspring.admin.dto.RoleChangeRequestDto;
 import com.sparta.easyspring.admin.service.AdminPostManagementService;
 import com.sparta.easyspring.admin.service.AdminUserManagementService;
@@ -55,6 +56,15 @@ public class AdminController {
         return ResponseEntity.ok(posts);
     }
 
+    // 게시글 작성 시 공지와 고정 옵션 선택하도록
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/posts/option")
+    public ResponseEntity<PostResponseDto> postStatusByAdmin(@RequestBody PostWithStatusRequestDto requestDto) {
+        PostResponseDto responseDto = adminPostManagementService.addPostByAdmin(requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    // 게시글 상태 공지로 변경
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/posts/notice/{postId}")
     public ResponseEntity<String> postStatusIsNotice(@PathVariable(value = "postId") Long postId) {
@@ -62,6 +72,7 @@ public class AdminController {
         return ResponseEntity.ok("게시글 상태 공지로 변경 완료");
     }
 
+    // 게시글 상태 상단 고정
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/posts/pin/{postId}")
     public ResponseEntity<String> postStatusIsPinned(@PathVariable(value = "postId") Long postId) {
@@ -69,6 +80,7 @@ public class AdminController {
         return ResponseEntity.ok("게시글 상태 고정으로 변경 완료");
     }
 
+    // 게시글 수정
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/posts/{postId}")
     public ResponseEntity<PostResponseDto> modifiedPostByAdmin(@PathVariable(value = "postId") Long postId, @RequestBody PostRequestDto requestDto) {
@@ -77,6 +89,7 @@ public class AdminController {
         return ResponseEntity.ok(responseDto);
     }
 
+    // 게시글 삭제
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<String> deletePostByAdmin(@PathVariable(value = "postId") Long postId) {
