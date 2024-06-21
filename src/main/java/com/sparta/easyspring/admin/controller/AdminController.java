@@ -4,6 +4,7 @@ import com.sparta.easyspring.admin.dto.AllOfUserResponseDto;
 import com.sparta.easyspring.admin.dto.RoleChangeRequestDto;
 import com.sparta.easyspring.admin.service.AdminPostManagementService;
 import com.sparta.easyspring.admin.service.AdminUserManagementService;
+import com.sparta.easyspring.post.dto.PostRequestDto;
 import com.sparta.easyspring.post.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,23 @@ public class AdminController {
     // 게시글 전체 목록 조회
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/posts")
-    public ResponseEntity<List<PostResponseDto>> getAllPostsByAdmin(@RequestParam(value = "page",defaultValue = "0") int page,
-                                                                    @RequestParam(value = "sortBy",defaultValue = "createdAt") String sortBy) {
+    public ResponseEntity<List<PostResponseDto>> getAllPostsByAdmin(@RequestParam(value = "page") int page,
+                                                                    @RequestParam(value = "sortBy") String sortBy) {
         List<PostResponseDto> posts = adminPostManagementService.getAllPosts(page, sortBy);
         return ResponseEntity.ok(posts);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/posts/notice/{postId}")
+    public ResponseEntity<String> postStatusIsNotice(@PathVariable(value = "postId") Long postId) {
+        adminPostManagementService.makePostStatusIsNotice(postId);
+        return ResponseEntity.ok("상태변경 완료");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/posts/pin/{postId}")
+    public ResponseEntity<String> postStatusIsPinned(@PathVariable(value = "postId") Long postId) {
+        adminPostManagementService.makePostStatusIsPinned(postId);
+        return ResponseEntity.ok("상태변경 완료");
     }
 }

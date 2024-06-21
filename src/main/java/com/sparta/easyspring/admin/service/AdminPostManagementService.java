@@ -1,6 +1,7 @@
 package com.sparta.easyspring.admin.service;
 
 import com.sparta.easyspring.auth.entity.User;
+import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
 import com.sparta.easyspring.post.dto.PostRequestDto;
 import com.sparta.easyspring.post.dto.PostResponseDto;
@@ -34,5 +35,19 @@ public class AdminPostManagementService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void makePostStatusIsNotice(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorEnum.POST_NOT_FOUND));
 
+        post.makeNoticePost(true);
+    }
+
+    @Transactional
+    public void makePostStatusIsPinned(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorEnum.POST_NOT_FOUND));
+
+        post.makePinPost(true);
+    }
 }
