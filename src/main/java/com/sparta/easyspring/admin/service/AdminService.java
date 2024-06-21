@@ -8,6 +8,7 @@ import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,14 @@ public class AdminService {
         return userList.stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteUserByAdmin(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorEnum.USER_NOT_FOUND));
+
+        userRepository.delete(user);
     }
 
     private AllOfUserResponseDto entityToDto(User user) {

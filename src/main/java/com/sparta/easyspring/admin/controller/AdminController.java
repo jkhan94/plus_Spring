@@ -34,6 +34,15 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
+    // 특정 회원 삭제
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/users")
+    public ResponseEntity<String> deleteUserByAdmin(@RequestParam("userId") Long userId) {
+        adminService.deleteUserByAdmin(userId);
 
-    // todo : 전체 회원 조회, 특정 회원 정보 수정, 특정 회원 삭제
+        return ResponseEntity.ok("해당 유저의 삭제가 완료되었습니다.");
+    }
+
+
+    // todo : 특정 회원 정보 수정, 특정 회원 삭제
 }
