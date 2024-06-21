@@ -1,12 +1,10 @@
 package com.sparta.easyspring.postlike.entity;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.postlike.MockTestDataSetup;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

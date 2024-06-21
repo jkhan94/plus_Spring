@@ -1,7 +1,6 @@
 package com.sparta.easyspring.postlike.repository;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
