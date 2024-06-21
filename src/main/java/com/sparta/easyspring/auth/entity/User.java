@@ -85,4 +85,5 @@ public class User extends TimeStamp {
         this.userRole = userRole;
         this.userStatus = UserStatus.ACTIVE;
     }
+
 }

@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j(topic = "User service")
 public class UserService {
 
     private final UserRepository userRepository;
@@ -48,17 +50,21 @@ public class UserService {
     private final String USERPASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{}|;:'\",.<>/?]).{8,15}$";
 
     public ResponseEntity<AuthResponseDto> signup(AuthRequestDto signupRequest) {
+        log.info("signup 시작");
         String authName = signupRequest.getUsername();
         String password = signupRequest.getPassword();
 
+        log.info("유저 정규식");
         if (!authName.matches(USERID_REGEX)) {
             throw new CustomException(INVALID_USERNAME);
         }
 
+        log.info("비밀번호 정규식");
         if (!password.matches(USERPASSWORD_REGEX)) {
             throw new CustomException(INVALID_PASSWORD);
         }
 
+        log.info("중복이름 검색");
         Optional<User> invalidUser = userRepository.findByUsername(authName);
         if (invalidUser.isPresent()) {
             throw new CustomException(DUPLICATE_USER);
@@ -66,12 +72,12 @@ public class UserService {
 
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(authName, encodedPassword, UserRoleEnum.USER);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        PasswordHistory ph = new PasswordHistory(encodedPassword, user);
+        PasswordHistory ph = new PasswordHistory(encodedPassword, savedUser);
         passwordHistoryRepository.save(ph);
 
-        AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
+        AuthResponseDto responseDto = new AuthResponseDto(savedUser.getId(), savedUser.getUsername());
 
         return ResponseEntity.ok(responseDto);
     }

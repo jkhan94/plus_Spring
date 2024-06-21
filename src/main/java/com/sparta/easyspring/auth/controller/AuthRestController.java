@@ -1,20 +1,25 @@
 package com.sparta.easyspring.auth.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.AuthResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
 import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
+import com.sparta.easyspring.auth.service.KakaoService;
 import com.sparta.easyspring.auth.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthRestController {
 
     private final UserService userService;
+    private final KakaoService kakaoService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthRequestDto requestDto) {
@@ -54,5 +60,11 @@ public class AuthRestController {
     @PostMapping("/refresh")
     public ResponseEntity<String> refresh(@RequestBody RefreshTokenRequestDto requestDto) {
         return userService.refresh(requestDto);
+    }
+
+    @GetMapping("/login/kakao")
+    public ResponseEntity<AuthResponseDto> kakaoLogin(@RequestParam String code,
+        HttpServletResponse response) throws Exception {
+        return kakaoService.kakaoLogin(code,response);
     }
 }
