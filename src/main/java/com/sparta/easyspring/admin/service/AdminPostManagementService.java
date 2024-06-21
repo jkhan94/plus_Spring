@@ -37,17 +37,38 @@ public class AdminPostManagementService {
 
     @Transactional
     public void makePostStatusIsNotice(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorEnum.POST_NOT_FOUND));
+        Post post = findPostById(postId);
 
         post.makeNoticePost(true);
     }
 
     @Transactional
     public void makePostStatusIsPinned(Long postId) {
+        Post post = findPostById(postId);
+
+        post.makePinPost(true);
+    }
+
+    @Transactional
+    public PostResponseDto modifiedPostByAdmin(Long postId, PostRequestDto requestDto) {
+        Post post = findPostById(postId);
+
+        post.update(requestDto);
+        postRepository.save(post);
+        return new PostResponseDto(post);
+    }
+
+    @Transactional
+    public void deletePostByAdmin(Long postId) {
+        Post post = findPostById(postId);
+
+        postRepository.delete(post);
+    }
+
+    private Post findPostById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorEnum.POST_NOT_FOUND));
 
-        post.makePinPost(true);
+        return post;
     }
 }

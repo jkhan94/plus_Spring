@@ -59,13 +59,29 @@ public class AdminController {
     @PutMapping("/posts/notice/{postId}")
     public ResponseEntity<String> postStatusIsNotice(@PathVariable(value = "postId") Long postId) {
         adminPostManagementService.makePostStatusIsNotice(postId);
-        return ResponseEntity.ok("상태변경 완료");
+        return ResponseEntity.ok("게시글 상태 공지로 변경 완료");
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/posts/pin/{postId}")
     public ResponseEntity<String> postStatusIsPinned(@PathVariable(value = "postId") Long postId) {
         adminPostManagementService.makePostStatusIsPinned(postId);
-        return ResponseEntity.ok("상태변경 완료");
+        return ResponseEntity.ok("게시글 상태 고정으로 변경 완료");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<PostResponseDto> modifiedPostByAdmin(@PathVariable(value = "postId") Long postId, @RequestBody PostRequestDto requestDto) {
+        PostResponseDto responseDto = adminPostManagementService.modifiedPostByAdmin(postId, requestDto);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<String> deletePostByAdmin(@PathVariable(value = "postId") Long postId) {
+        adminPostManagementService.deletePostByAdmin(postId);
+
+        return ResponseEntity.ok("삭제 되었습니다.");
     }
 }
