@@ -40,6 +40,12 @@ dependencies {
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    // TEST
+    testRuntimeOnly 'com.h2database:h2'
+    testCompileOnly 'org.projectlombok:lombok'
+    testCompileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
 }
 
 tasks.named('test') {
