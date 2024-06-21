@@ -1,5 +1,6 @@
 package com.sparta.easyspring.postlike.controller;
 
+import com.sparta.easyspring.MockSpringSecurityFilter;
 import com.sparta.easyspring.auth.config.SecurityConfig;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
