@@ -6,7 +6,7 @@ import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import com.sparta.easyspring.postlike.service.PostLikeService;
 import org.junit.jupiter.api.BeforeAll;

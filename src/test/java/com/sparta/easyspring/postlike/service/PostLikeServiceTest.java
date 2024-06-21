@@ -5,7 +5,7 @@ import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import org.junit.jupiter.api.BeforeEach;

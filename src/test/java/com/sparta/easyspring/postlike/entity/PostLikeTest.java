@@ -2,7 +2,7 @@ package com.sparta.easyspring.postlike.entity;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.post.entity.Post;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

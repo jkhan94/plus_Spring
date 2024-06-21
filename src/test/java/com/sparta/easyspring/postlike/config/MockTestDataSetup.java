@@ -1,4 +1,4 @@
-package com.sparta.easyspring.postlike;
+package com.sparta.easyspring.postlike.config;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;

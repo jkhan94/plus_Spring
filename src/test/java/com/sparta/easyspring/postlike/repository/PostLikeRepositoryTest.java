@@ -4,7 +4,7 @@ import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
