@@ -31,6 +31,9 @@ public class Post extends TimeStamp {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> commentList = new ArrayList<>();
 
+    private boolean isNotice = false; // 공지글 여부
+    private boolean isPinned = false; // 상단 고정 여부
+
     public Post(PostRequestDto requestDto, User user) {
         this.title= requestDto.getTitle();
         this.contents= requestDto.getContents();
@@ -49,5 +52,12 @@ public class Post extends TimeStamp {
 
     public void decreaseLikes() {
         this.likes--;
+    }
+
+    public void makeNoticePost(boolean isNotice) {
+        this.isNotice = isNotice;
+    }
+    public void makePinPost(boolean isPinned) {
+        this.isPinned = isPinned;
     }
 }
