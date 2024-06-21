@@ -1,15 +1,7 @@
 package com.sparta.easyspring.auth.entity;
 
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Table(name="users")
+@RequiredArgsConstructor
 public class User {
 
     @Id
