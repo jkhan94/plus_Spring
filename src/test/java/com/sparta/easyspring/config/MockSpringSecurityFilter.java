@@ -1,4 +1,4 @@
-package com.sparta.easyspring;
+package com.sparta.easyspring.config;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
