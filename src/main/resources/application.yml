@@ -8,6 +8,12 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 30MB
+
     database-platform: org.hibernate.dialect.MySQLDialect
   security:
     oauth2:
@@ -33,3 +39,17 @@ jwt:
 
 server:
   port: 8080
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: spring-multi-media-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
