@@ -210,7 +210,8 @@ public class AuthRestControllerTest {
     @DisplayName("비밀번호 수정 성공")
     void updatePassword_success() throws Exception {
         // given
-        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto();
+        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
+            PASSWORD + "123");
         try {
             Field usernameFiled = UpdatePasswordRequestDto.class.getDeclaredField("username");
             usernameFiled.setAccessible(true);
@@ -247,8 +248,8 @@ public class AuthRestControllerTest {
     void refresh_success() throws Exception {
         // given
         String accessToken = "Bearer accesToken";
-
-        RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto();
+        String refreshToken = "refreshToken";
+        RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);

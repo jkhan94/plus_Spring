@@ -231,9 +231,6 @@ public class UserService {
             throw new CustomException(USER_NOT_FOUND);
         }
 
-        if (!refreshToken.equals(user.getRefreshToken())) {
-            throw new CustomException(INVALID_TOKEN);
-        }
 
         // AccessToken 재발급
         String newAccessToken = jwtUtil.createAccessToken(username);

@@ -1,6 +1,8 @@
 package com.sparta.easyspring.auth.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.anyString;
@@ -12,12 +14,14 @@ import com.sparta.easyspring.auth.dto.ProfileResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
 import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
+import com.sparta.easyspring.auth.entity.PasswordHistory;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.repository.PasswordHistoryRepository;
 import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
+import com.sparta.easyspring.exception.CustomException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +41,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-//@TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
 
@@ -83,9 +86,48 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 실패 : 유저 정규식 불만족")
+    @Order(10)
+    void signup_Should_ThrowException_WhenDoesNotMatchRegexUsername() {
+        // given
+        AuthRequestDto requestDto = new AuthRequestDto("InvalidUsername", PASSWORD);
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.signup(requestDto));
+    }
+
+    @Test
+    @DisplayName("회원가입 실패 : 비밀번호 정규식 불만족")
+    @Order(11)
+    void signup_Should_ThrowException_WhenDoesNotMatchRegesPassword() {
+        // given
+        AuthRequestDto requestDto = new AuthRequestDto(USERNAME, "InvalidPassword");
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.signup(requestDto));
+
+    }
+
+    @Test
+    @DisplayName("회원가입 실패 : 이미 가입한 유저 존재")
+    @Order(12)
+    void signup_Should_ThrowException_WhenAlreadyExistUser() {
+        // given
+        AuthRequestDto requestDto = new AuthRequestDto(USERNAME, PASSWORD);
+
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.signup(requestDto));
+
+    }
+
+    @Test
     @DisplayName("로그인 성공")
     @Order(2)
     void login_success() {
+
         //given
         AuthRequestDto requestDto = new AuthRequestDto(USERNAME, PASSWORD);
 
@@ -113,9 +155,35 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("로그인 실패 : 유저이름 불일치")
+    @Order(13)
+    void login_Should_ThrowException_WhenNotMatchUsername() {
+        // given
+        AuthRequestDto requestDto = new AuthRequestDto(USERNAME, PASSWORD);
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.login(requestDto));
+    }
+
+    @Test
+    @DisplayName("로그인 실패 : 패스워드 불일치")
+    @Order(14)
+    void login_Should_ThrowException_WhenNotMatchPassword() {
+        // given
+        AuthRequestDto requestDto = new AuthRequestDto(USERNAME, PASSWORD);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
+
+        // when
+        assertThrows(CustomException.class, () -> userService.login(requestDto));
+    }
+
+    @Test
     @DisplayName("로그아웃 성공")
     @Order(3)
     void logout_success() {
+
         // given
         User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
@@ -128,6 +196,21 @@ public class UserServiceTest {
         // then
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         assertEquals(USERNAME, response.getBody().getUsername());
+    }
+
+    @Test
+    @DisplayName("로그아웃 실패 : 유저이름 불일치")
+    @Order(15)
+    void logout_Should_ThrowException_WhenNotMatchUsername() {
+        // given
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.logout(userDetails));
+
     }
 
     @Test
@@ -149,25 +232,41 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴 실패 : 유저이름 불일치")
+    @Order(16)
+    void withdraw_should_ThrowException_WhenNotMatchUsername() {
+        // given
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.withdraw(userDetails));
+
+    }
+
+    @Test
+    @DisplayName("회원탈퇴 실패 : 이미 탈퇴한 유저")
+    @Order(17)
+    void withdraw_should_ThrowException_WhenAlreadyWithdrawUser() {
+        // given
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        user.withdraw();
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.withdraw(userDetails));
+
+    }
+
+    @Test
     @DisplayName("비밀번호 수정 성공")
     @Order(5)
     void updatePassword_success() {
-        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto();
-        try {
-            Field usernameFiled = UpdatePasswordRequestDto.class.getDeclaredField("username");
-            usernameFiled.setAccessible(true);
-            usernameFiled.set(requestDto, USERNAME);
-
-            Field passwordField = UpdatePasswordRequestDto.class.getDeclaredField("password");
-            passwordField.setAccessible(true);
-            passwordField.set(requestDto, PASSWORD);
-
-            Field newPasswordField = UpdatePasswordRequestDto.class.getDeclaredField("newpassword");
-            newPasswordField.setAccessible(true);
-            newPasswordField.set(requestDto, "123abcAbc!2");
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
+            "123abcAbc!2");
 
         User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
@@ -179,6 +278,70 @@ public class UserServiceTest {
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(USERNAME, response.getBody().getUsername());
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 실패 : 유저이름 불일치")
+    @Order(18)
+    void updatePassword_Should_ThrowException_WhenNotMatchUsername() {
+        // given
+        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
+            PASSWORD + "123");
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.empty());
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.updatePassword(requestDto));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 실패 : 비밀번호 불일치")
+    @Order(19)
+    void updatePassword_Should_ThrowException_WhenNotMatchPassword() {
+        // given
+        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
+            PASSWORD + "123");
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.updatePassword(requestDto));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 실패 : 새 비밀번호 정규식불만족")
+    @Order(19)
+    void updatePassword_Should_ThrowException_WhenNotMatchRegexNewPassword() {
+        // given
+        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
+            "InvalidPassword");
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
+        given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.updatePassword(requestDto));
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정 실패 : 3회 내 설정했던 비밀번호")
+    @Order(20)
+    void updatePassword_Should_ThrowException_WhenExistPasswordHistory() {
+        // given
+        UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
+            PASSWORD + "12");
+        User user = createMockUser(1L, USERNAME, PASSWORD);
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
+        given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
+
+        ArrayList<PasswordHistory> passwordHistories = new ArrayList<>();
+        passwordHistories.add(new PasswordHistory(PASSWORD, user));
+        passwordHistories.add(new PasswordHistory(PASSWORD + "12", user));
+
+        given(passwordHistoryRepository.findByUserId(anyLong())).willReturn(passwordHistories);
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.updatePassword(requestDto));
+
     }
 
     @Test
@@ -208,18 +371,45 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("프로필 업데이트 실패 : 유저이름 불일치")
+    @Order(21)
+    void updateProfile_Should_ThrowException_WhenNotMatchUsername() {
+        // given
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.empty());
+
+        UpdateProfileRequestDto requestDto = new UpdateProfileRequestDto(USERNAME + "2", "hello");
+
+        // when - then
+        assertThrows(CustomException.class,
+            () -> userService.updateProfile(userDetails, requestDto));
+
+    }
+
+    @Test
+    @DisplayName("프로필 업데이트 실패 : 유저이름 정규식 불만족")
+    @Order(22)
+    void updateProfile_Should_ThrowException_WhenNotMatchRegexUsername(){
+        // given
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
+
+        UpdateProfileRequestDto requestDto = new UpdateProfileRequestDto("invalidUsername",
+            "hello");
+
+        // when - then
+        assertThrows(CustomException.class,
+            () -> userService.updateProfile(userDetails, requestDto));
+    }
+
+    @Test
     @DisplayName("리프레쉬 성공")
     @Order(7)
     void refresh_success() {
-        RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto();
         String refreshToken = "refreshToken";
-        try {
-            Field field = RefreshTokenRequestDto.class.getDeclaredField("refreshToken");
-            field.setAccessible(true);
-            field.set(requestDto, refreshToken);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
 
         given(jwtUtil.validateToken(refreshToken)).willReturn(true);
         given(jwtUtil.getUsernameFromToken(refreshToken)).willReturn(USERNAME);
@@ -241,6 +431,39 @@ public class UserServiceTest {
         assert headers != null;
         assertEquals("Bearer " + accessToken, headers.get(0));
         assertEquals("Refresh Token 재발급", response.getBody());
+    }
+
+    @Test
+    @DisplayName("리프레쉬 실패 : 유효하지 않은 토큰")
+    @Order(23)
+    void refresh_Should_ThrowException_WhenInvalidToken(){
+        // given
+        String refreshToken = "refreshToken";
+        RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
+
+        given(jwtUtil.validateToken(refreshToken)).willReturn(false);
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.refresh(requestDto));
+    }
+
+    @Test
+    @DisplayName("리프레쉬 실패 : 유저이름 불일치")
+    @Order(24)
+    void refresh_Should_ThrowException_WhenNotMatchUsername(){
+        // given
+        String refreshToken = "refreshToken";
+        RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
+
+        given(jwtUtil.validateToken(refreshToken)).willReturn(true);
+
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
+        given(jwtUtil.getUsernameFromToken(refreshToken)).willReturn(USERNAME);
+        given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
+
+        // when - then
+        assertThrows(CustomException.class,()->userService.refresh(requestDto));
+
     }
 
     @Test
@@ -271,6 +494,18 @@ public class UserServiceTest {
         assertEquals(intro, response.getBody().getIndroduction());
     }
 
+    @Test
+    @DisplayName("프로필 얻기 실패 : 유저이름 불일치")
+    @Order(25)
+    void getProfile_Should_ThrowException_WhenNotMatchUsername(){
+        // given
+        given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        // when - then
+        assertThrows(CustomException.class, () -> userService.getProfile(1L));
+
+    }
+
 
     @Test
     @DisplayName("모든 프로필 얻기")
@@ -295,13 +530,29 @@ public class UserServiceTest {
         ResponseEntity<List<ProfileResponseDto>> response = userService.getProfiles();
 
         // then
-        assertEquals(3,response.getBody().size());
+        assertEquals(3, response.getBody().size());
         assertEquals(1L, response.getBody().get(0).getId());
         assertEquals(2L, response.getBody().get(1).getId());
         assertEquals(3L, response.getBody().get(2).getId());
         assertEquals("hello 1", response.getBody().get(0).getIndroduction());
         assertEquals("hello 2", response.getBody().get(1).getIndroduction());
         assertEquals("hello 3", response.getBody().get(2).getIndroduction());
+    }
+
+    @Test
+    @DisplayName("모든 프로필 얻기 실패 : 유저 없음 ")
+    @Order(26)
+    void getProfiles_Should_ThrowException_WhenEmptyUser(){
+        // given
+        List<User> userList = new ArrayList<>();
+        given(userRepository.findAll()).willReturn(userList);
+
+        // when
+        ResponseEntity<List<ProfileResponseDto>> response = userService.getProfiles();
+
+        // then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     /**
@@ -313,6 +564,7 @@ public class UserServiceTest {
      * @return
      */
     private User createMockUser(Long id, String username, String password) {
+
         User user = new User(username, password, UserRoleEnum.USER);
         try {
             Field idField = User.class.getDeclaredField("id");
