@@ -22,6 +22,7 @@ public enum ErrorEnum {
     INCORRECT_USER(400,"사용자가 동일하지 않습니다."),
     DUPLICATE_USER(400,"이미 등록된 사용자 입니다."),
     WITHDRAW_USER(400, "탈퇴한 회원입니다."),
+    BANNED_USER(403, "BAN 처리된 사용자입니다."),
 
     POST_NOT_FOUND(400, "등록되지 않은 게시글입니다."),
 

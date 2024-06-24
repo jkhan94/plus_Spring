@@ -1,4 +1,4 @@
-package com.sparta.easyspring.postlike.config;
+package com.sparta.easyspring.config;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
@@ -52,7 +52,7 @@ public class MockTestDataSetup {
         long TEST_COMMENT_ID = 1L;
         String TEST_COMMENT_CONTENTS = "comment contents";
 
-        Comment TEST_COMMENT = new Comment(user,post,TEST_COMMENT_CONTENTS);
+        Comment TEST_COMMENT = new Comment(user, post, TEST_COMMENT_CONTENTS);
         ReflectionTestUtils.setField(TEST_COMMENT, "id", TEST_COMMENT_ID);
 
         return TEST_COMMENT;
