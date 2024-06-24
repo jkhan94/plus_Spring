@@ -2,6 +2,7 @@ package com.sparta.easyspring.post.entity;
 
 import com.sparta.easyspring.admin.dto.PostWithStatusRequestDto;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
+import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.timestamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.comment.entity.Comment;
@@ -34,6 +35,8 @@ public class Post extends TimeStamp {
     private List<Comment> commentList = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<PostMedia> postMediaList = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> postLikeList = new ArrayList<>();
 
     private boolean isNotice = false; // 공지글 여부
     private boolean isPinned = false; // 상단 고정 여부
@@ -52,6 +55,10 @@ public class Post extends TimeStamp {
     public void updateByAdmin(PostRequestDto requestDto) {
         this.title= requestDto.getTitle() + " (Admin에 의해 수정되었음)";
         this.contents= requestDto.getContents();
+    }
+
+    public void setPostLike(PostLike postLike) {
+        this.postLikeList.add(postLike);
     }
 
     // 어드민 글 생성시 필요한 생성자
