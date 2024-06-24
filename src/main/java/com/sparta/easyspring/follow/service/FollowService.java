@@ -2,10 +2,13 @@ package com.sparta.easyspring.follow.service;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.service.UserService;
-import com.sparta.easyspring.follow.repository.FollowRepository;
+import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.follow.entity.Follow;
+import com.sparta.easyspring.follow.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.sparta.easyspring.exception.ErrorEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -16,11 +19,11 @@ public class FollowService {
     public void addFollow(Long followingId, User user) {
         User followingUser = userService.findUserById(followingId);
         if(followingId.equals(user.getId())){
-            throw new IllegalArgumentException("본인을 팔로우 할 수 없습니다.");
+            throw new CustomException(INCORRECT_SELF_FOLLOW);
         }
         Follow checkFollow = findFollowById(followingUser.getId(),user);
         if(checkFollow != null){
-            throw new IllegalArgumentException("이미 팔로우된 상태입니다.");
+            throw new CustomException(ALREADY_FOLLOW);
         }
         Follow follow = new Follow(followingUser,user);
         followRepository.save(follow);
@@ -30,7 +33,7 @@ public class FollowService {
         User followingUser = userService.findUserById(followingId);
         Follow checkFollow = findFollowById(followingUser.getId(),user);
         if(checkFollow == null){
-            throw new IllegalArgumentException("취소할 팔로우가 없습니다.");
+            throw new CustomException(NON_EXISTENT_ELEMENT);
         }
         followRepository.delete(checkFollow);
     }
