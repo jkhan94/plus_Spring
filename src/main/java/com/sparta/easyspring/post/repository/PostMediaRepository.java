@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface PostMediaRepository extends JpaRepository<PostMedia,Long> {
-    PostMedia findByPostAndFilename(Post post, String fileName);
-
     List<PostMedia> findAllByPost(Post post);
     long countByPost(Post post);
+
+    PostMedia findByIdAndPost(Long id, Post post);
 }

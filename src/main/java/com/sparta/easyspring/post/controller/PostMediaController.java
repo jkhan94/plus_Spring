@@ -45,10 +45,10 @@ public class PostMediaController {
         }
     }
 
-    @DeleteMapping("/{postId}/media/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable Long postId, @PathVariable String fileName, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping("/{postId}/media/{fileId}")
+    public ResponseEntity<String> deleteFile(@PathVariable Long postId, @PathVariable(name = "fileId") Long fileId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            postMediaService.deleteFile(postId, userDetails.getUser(), fileName);
+            postMediaService.deleteFile(postId, userDetails.getUser(), fileId);
             return ResponseEntity.status(HttpStatus.OK).body("파일 삭제 완료");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 삭제 실패 : " + e.getMessage());
