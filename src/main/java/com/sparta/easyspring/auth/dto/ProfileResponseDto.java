@@ -1,12 +1,12 @@
 package com.sparta.easyspring.auth.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AuthRequestDto {
+public class ProfileResponseDto {
+    private Long id;
     private String username;
-    private String password;
+    private String indroduction;
 }

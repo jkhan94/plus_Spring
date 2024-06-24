@@ -1,12 +1,11 @@
 package com.sparta.easyspring.postlike.service;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,7 +39,6 @@ class PostLikeServiceTest {
     private static User TEST_USER;
     private static User ANOTHER_USER;
     private static Post TEST_POST;
-
 
 
     @BeforeEach
