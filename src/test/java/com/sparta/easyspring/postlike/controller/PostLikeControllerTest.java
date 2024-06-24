@@ -1,12 +1,12 @@
 package com.sparta.easyspring.postlike.controller;
 
+import com.sparta.easyspring.MockSpringSecurityFilter;
 import com.sparta.easyspring.auth.config.SecurityConfig;
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import com.sparta.easyspring.postlike.service.PostLikeService;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +21,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -46,13 +45,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostLikeControllerTest {
     private MockMvc mvc;
 
-    // 가짜 인증
     private static Principal mockPrincipal;
 
     @Autowired
     private WebApplicationContext context;
 
-    // 컨트롤러에서 주입받는 가짜 빈
     @MockBean
     PostLikeService postLikeService;
 
@@ -65,17 +62,14 @@ class PostLikeControllerTest {
     @MockBean
     JwtUtil jwtUtil;
 
-    // MockMvc에 객체 주입
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
-                // 만들어준 가짜 필터 적용
                 .apply(springSecurity(new MockSpringSecurityFilter()))
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 
-    // 가짜 유저와 가짜 인증 객체 생성
     private static void mockUserSetup() {
         User TEST_USER = MockTestDataSetup.mockTestUserSetup();
 

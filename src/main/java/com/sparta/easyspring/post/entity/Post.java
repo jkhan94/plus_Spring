@@ -32,6 +32,8 @@ public class Post extends TimeStamp {
     private User user;
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<PostMedia> postMediaList = new ArrayList<>();
 
     private boolean isNotice = false; // 공지글 여부
     private boolean isPinned = false; // 상단 고정 여부
