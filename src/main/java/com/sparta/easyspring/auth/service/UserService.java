@@ -1,14 +1,5 @@
 package com.sparta.easyspring.auth.service;
 
-import static com.sparta.easyspring.exception.ErrorEnum.DUPLICATE_USER;
-import static com.sparta.easyspring.exception.ErrorEnum.INCORRECT_PASSWORD;
-import static com.sparta.easyspring.exception.ErrorEnum.INVALID_PASSWORD;
-import static com.sparta.easyspring.exception.ErrorEnum.INVALID_TOKEN;
-import static com.sparta.easyspring.exception.ErrorEnum.INVALID_USERNAME;
-import static com.sparta.easyspring.exception.ErrorEnum.PASSWORD_CHANGE_NOT_ALLOWED;
-import static com.sparta.easyspring.exception.ErrorEnum.USER_NOT_FOUND;
-import static com.sparta.easyspring.exception.ErrorEnum.WITHDRAW_USER;
-
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.AuthResponseDto;
 import com.sparta.easyspring.auth.dto.ProfileResponseDto;
@@ -35,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.sparta.easyspring.exception.ErrorEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +83,9 @@ public class UserService {
         }
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new CustomException(INCORRECT_PASSWORD);
+        }
+        if (user.getUserRole().equals(UserRoleEnum.BANNED)) {
+            throw new CustomException(BANNED_USER);
         }
 
         String accessToken = jwtUtil.createAccessToken(user.getUsername());
