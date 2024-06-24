@@ -7,7 +7,7 @@ import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import com.sparta.easyspring.commentlike.repository.CommentLikeRepository;
 import com.sparta.easyspring.commentlike.service.CommentLikeService;
-import com.sparta.easyspring.postlike.MockTestDataSetup;
+import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.controller.MockSpringSecurityFilter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,9 +83,9 @@ class CommentLikeControllerTest{
 
     // 가짜 유저와 가짜 인증 객체 생성
     private static void mockUserSetup() {
-        User testUser = MockTestDataSetup.mockTestUserSetup();
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
 
-        UserDetailsImpl testUserDetails = new UserDetailsImpl(testUser);
+        UserDetailsImpl testUserDetails = new UserDetailsImpl(TEST_USER);
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
     }
 
