@@ -7,7 +7,7 @@ import com.sparta.easyspring.comment.repository.CommentRepository;
 import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
-import com.sparta.easyspring.postlike.config.MockTestDataSetup;
+import com.sparta.easyspring.config.MockTestDataSetup;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
