@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,16 +24,16 @@ public class ProfileController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResponseDto> getProfile(@RequestParam Long id){
+    public ResponseEntity<ProfileResponseDto> getProfile(@PathVariable Long id){
         return userService.getProfile(id);
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<ProfileResponseDto>> getProfiles(){
         return userService.getProfiles();
     }
 
-    @PutMapping("/update/profile")
+    @PutMapping("/update")
     public ResponseEntity<ProfileResponseDto> updateProfile(
         @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody
     UpdateProfileRequestDto requestDto) {

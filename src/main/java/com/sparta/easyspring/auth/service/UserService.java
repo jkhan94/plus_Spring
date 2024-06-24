@@ -64,7 +64,7 @@ public class UserService {
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        User user = new User(authName, encodedPassword, UserRoleEnum.USER);
+        User user = new User(authName, encodedPassword, UserRoleEnum.ADMIN);
         User savedUser = userRepository.save(user);
 
         PasswordHistory ph = new PasswordHistory(encodedPassword, savedUser);
