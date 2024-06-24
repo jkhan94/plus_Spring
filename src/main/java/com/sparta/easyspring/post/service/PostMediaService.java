@@ -46,17 +46,17 @@ public class PostMediaService {
         return new AbstractMap.SimpleEntry<>(fileUrl, originalFilename);
     }
 
-    public void deleteFile(Long postId, User user, String fileName) {
+    public void deleteFile(Long postId, User user, Long fileId) {
         Post post = postService.findPostbyId(postId);
         if(!post.getUser().getId().equals(user.getId())){
             throw new CustomException(INCORRECT_USER);
         }
-        PostMedia postMedia = postMediaRepository.findByPostAndFilename(post,fileName);
+        PostMedia postMedia = postMediaRepository.findByIdAndPost(fileId,post);
         if(postMedia==null){
             throw new CustomException(NON_EXISTENT_ELEMENT);
         }
         postMediaRepository.delete(postMedia);
-        s3Service.deleteImage(fileName);
+        s3Service.deleteImage(postMedia.getFilename());
     }
 
     public List<PostMediaResponseDto> getAllFiles(Long postId) {
