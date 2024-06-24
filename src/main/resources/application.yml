@@ -5,6 +5,7 @@ spring:
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -14,18 +15,17 @@ spring:
       max-request-size: 30MB
       max-file-size: 30MB
 
-    database-platform: org.hibernate.dialect.MySQLDialect
   security:
     oauth2:
       client:
         registration:
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
-            redirect-uri: http://localhost:8080/api/auth/login/kakao
+            redirect-uri: http://lostark.shop:8080/api/auth/login/kakao
             client-secret: ${KAKAO_CLIENT_SECRET}
           naver:
             client-id: ${NAVER_CLIENT_ID}
-            redirect-uri: http://localhost:8080/api/auth/login/naver
+            redirect-uri: http://lostark.shop:8080/api/auth/login/naver
             client-secret: ${NAVER_CLIENT_SECRET}
 
 jwt:
