@@ -1,8 +1,9 @@
-package com.sparta.easyspring.postlike.config;
+package com.sparta.easyspring.config;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.entity.UserStatus;
+import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.post.entity.Post;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -46,4 +47,15 @@ public class MockTestDataSetup {
         ReflectionTestUtils.setField(TEST_POST, "user", user);
         return TEST_POST;
     }
+
+    public static Comment mockTestCommentSetup(User user, Post post) {
+        long TEST_COMMENT_ID = 1L;
+        String TEST_COMMENT_CONTENTS = "comment contents";
+
+        Comment TEST_COMMENT = new Comment(user, post, TEST_COMMENT_CONTENTS);
+        ReflectionTestUtils.setField(TEST_COMMENT, "id", TEST_COMMENT_ID);
+
+        return TEST_COMMENT;
+    }
+
 }

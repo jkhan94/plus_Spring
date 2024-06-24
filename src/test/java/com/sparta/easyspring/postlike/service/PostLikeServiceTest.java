@@ -5,12 +5,10 @@ import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
-import com.sparta.easyspring.postlike.config.MockTestDataSetup;
+import com.sparta.easyspring.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 class PostLikeServiceTest {
     @Mock
@@ -48,6 +47,7 @@ class PostLikeServiceTest {
     }
 
     @Test
+    @Order(1)
     @DisplayName("성공: 게시글 좋아요")
     void likePost() {
         // given
@@ -71,6 +71,7 @@ class PostLikeServiceTest {
     }
 
     @Test
+    @Order(2)
     @DisplayName("실패 : 중복된 좋아요")
     void duplicateLikePost() {
         // given
@@ -90,6 +91,7 @@ class PostLikeServiceTest {
 
 
     @Test
+    @Order(3)
     @DisplayName("실패: 본인이 작성한 게시글에 좋아요를 남길 수 없습니다.")
     void cannotLikeOwnPost() {
         // given
@@ -109,6 +111,7 @@ class PostLikeServiceTest {
 
 
     @Test
+    @Order(4)
     @DisplayName("성공: 게시글 좋아요 해제")
     void unlikePost() {
         // given
@@ -132,6 +135,7 @@ class PostLikeServiceTest {
     }
 
     @Test
+    @Order(5)
     @DisplayName("실패: 설정되지 않은 좋아요")
     void notLikedPost() {
         // given

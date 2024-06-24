@@ -1,15 +1,18 @@
-package com.sparta.easyspring.postlike.controller;
+package com.sparta.easyspring.commentlike.controller;
 
-import com.sparta.easyspring.config.MockSpringSecurityFilter;
 import com.sparta.easyspring.auth.config.SecurityConfig;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
+import com.sparta.easyspring.commentlike.repository.CommentLikeRepository;
+import com.sparta.easyspring.commentlike.service.CommentLikeService;
+import com.sparta.easyspring.config.MockSpringSecurityFilter;
 import com.sparta.easyspring.config.MockTestDataSetup;
-import com.sparta.easyspring.postlike.repository.PostLikeRepository;
-import com.sparta.easyspring.postlike.service.PostLikeService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -32,27 +36,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@WebMvcTest(controllers = {PostLikeController.class},
+
+@WebMvcTest(controllers = {CommentLikeController.class},
         excludeFilters = {
                 @ComponentScan.Filter(
                         type = FilterType.ASSIGNABLE_TYPE,
                         classes = SecurityConfig.class
                 )
         })
-class PostLikeControllerTest {
+class CommentLikeControllerTest{
+
     private MockMvc mvc;
 
+    // 가짜 인증
     private static Principal mockPrincipal;
 
     @Autowired
     private WebApplicationContext context;
 
-    @MockBean
-    PostLikeService postLikeService;
 
     @MockBean
-    PostLikeRepository postLikeRepository;
+    private CommentLikeService commentLikeService;
+
+    @MockBean
+    CommentLikeRepository commentLikeRepository;
 
     @MockBean
     UserDetailsServiceImpl userDetailsServiceImpl;
@@ -60,14 +67,21 @@ class PostLikeControllerTest {
     @MockBean
     JwtUtil jwtUtil;
 
+
+    // Mock 유저 설정
     @BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
+                // 만들어준 가짜 필터 적용
                 .apply(springSecurity(new MockSpringSecurityFilter()))
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 
+
+
+
+    // 가짜 유저와 가짜 인증 객체 생성
     private static void mockUserSetup() {
         User TEST_USER = MockTestDataSetup.mockTestUserSetup();
 
@@ -77,99 +91,64 @@ class PostLikeControllerTest {
 
     @BeforeAll
     static void beforeAll() {
-        PostLikeControllerTest.mockUserSetup();
+        CommentLikeControllerTest.mockUserSetup();
     }
 
     @Test
-    @Order(1)
-    @DisplayName("성공 : 게시글 좋아요")
-    void likePost() throws Exception {
+    @DisplayName("성공 : 댓글 좋아요")
+    void likeComment() throws Exception {
         // given
-        long postId = 1L;
+        long commentId = 1L;
         long userId = 1L;
 
-        String expectedMsg = "게시글 좋아요 완료";
-        String serviceResultMsg = "게시글 좋아요 완료";
+        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) mockPrincipal).getPrincipal();
+        User TEST_USER = userDetails.getUser();
 
-        Mockito.when(postLikeService.likePost(userId, postId)).thenReturn(serviceResultMsg);
+        String expectedMsg = "댓글 좋아요 완료";
+        String serviceResultMsg = "댓글 좋아요 완료";
+
+        // Mock 데이터 설정
+        Mockito.when(commentLikeService.likeComment(userId, commentId, TEST_USER))
+                .thenReturn(ResponseEntity.ok(serviceResultMsg));
 
         // when - then
-        mvc.perform(post("/like/post/{userId}/{postId}", userId, postId)
+        mvc.perform(post("/like/comment/{userId}/{commentId}", userId, commentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .principal(mockPrincipal)
                 )
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedMsg))
-                .andDo(print());
+                .andExpect(content().string(expectedMsg));
     }
 
 
     @Test
-    @Order(2)
-    @DisplayName("실패 : 좋아요 - 인증되지 않은 사용자")
-    void likePostException() throws Exception {
+    @DisplayName("성공 : 댓글 좋아요 해제")
+    void unlikeComment() throws Exception {
         // given
-        long postId = 1L;
-        long userId = 2L;
-
-        String expectedMsg = "인증되지 않은 사용자입니다. 로그인해주세요.";
-
-        // when - then
-        mvc.perform(post("/like/post/{userId}/{postId}", userId, postId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(mockPrincipal)
-                )
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string(expectedMsg))
-                .andDo(print());
-    }
-
-
-    @Test
-    @Order(3)
-    @DisplayName("성공 : 게시글 좋아요 해제")
-    void unlikePost() throws Exception {
-        // given
-        long postId = 1L;
+        long commentId = 1L;
         long userId = 1L;
 
-        String expectedMsg = "게시글 좋아요 해제 완료";
-        String serviceResultMsg = "게시글 좋아요 해제 완료";
+        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) mockPrincipal).getPrincipal();
+        User TEST_USER = userDetails.getUser();
 
-        Mockito.when(postLikeService.unlikePost(userId, postId)).thenReturn(serviceResultMsg);
+        String expectedMsg = "댓글 좋아요 해제 완료";
+
+        // 좋아요 해제 메서드 호출에 대한 Mockito 설정
+        Mockito.when(commentLikeService.unlikeComment(userId, commentId, TEST_USER))
+                .thenReturn(ResponseEntity.ok(expectedMsg));
 
         // when - then
-        mvc.perform(delete("/unlike/post/{userId}/{postId}", userId, postId)
+        mvc.perform(delete("/unlike/comment/{userId}/{commentId}", userId, commentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .principal(mockPrincipal)
                 )
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedMsg))
-                .andDo(print());
+                .andExpect(content().string(expectedMsg));
     }
 
 
-    @Test
-    @Order(4)
-    @DisplayName("실패 : 좋아요 해제 - 인증되지 않은 사용자")
-    void unlikePostException() throws Exception {
-        // given
-        long postId = 1L;
-        long userId = 2L;
-
-        String expectedMsg = "인증되지 않은 사용자입니다. 로그인해주세요.";
-
-        // when - then
-        mvc.perform(delete("/unlike/post/{userId}/{postId}", userId, postId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(mockPrincipal)
-                )
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string(expectedMsg))
-                .andDo(print());
-    }
 }
