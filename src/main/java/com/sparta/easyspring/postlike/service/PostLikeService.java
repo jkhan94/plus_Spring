@@ -5,12 +5,11 @@ import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
-import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import com.sparta.easyspring.postlike.entity.PostLike;
+import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import static com.sparta.easyspring.exception.ErrorEnum.*;
 

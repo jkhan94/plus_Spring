@@ -19,7 +19,6 @@ public class GlobalExceptionHandler {
                 .body(ex.getStatusEnum().getMsg());
     }
 
-    // @Valid 예외처리
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -27,7 +26,6 @@ public class GlobalExceptionHandler {
                 .body(ex.getBindingResult().getFieldError().getDefaultMessage());
     }
 
-    // 나머지 예외 처리
     @ExceptionHandler(Exception.class)
     protected ResponseEntity handleException(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
