@@ -49,6 +49,10 @@ public class Post extends TimeStamp {
         this.title= requestDto.getTitle();
         this.contents= requestDto.getContents();
     }
+    public void updateByAdmin(PostRequestDto requestDto) {
+        this.title= requestDto.getTitle() + " (Admin에 의해 수정되었음)";
+        this.contents= requestDto.getContents();
+    }
 
     // 어드민 글 생성시 필요한 생성자
     public Post(PostWithStatusRequestDto requestDto, User user, UserRoleEnum roleEnum){

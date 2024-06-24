@@ -7,6 +7,8 @@ import com.sparta.easyspring.admin.dto.RoleChangeRequestDto;
 import com.sparta.easyspring.admin.service.AdminCommentManagementService;
 import com.sparta.easyspring.admin.service.AdminPostManagementService;
 import com.sparta.easyspring.admin.service.AdminUserManagementService;
+import com.sparta.easyspring.comment.dto.CommentRequestDto;
+import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.post.dto.PostRequestDto;
 import com.sparta.easyspring.post.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -106,5 +108,14 @@ public class AdminController {
     @GetMapping("/comments")
     public ResponseEntity<List<AllOfCommentResponseDto>> getAllCommentsByAdmin(){
         return ResponseEntity.ok(adminCommentManagementService.getAllComments());
+    }
+
+    // 전체 댓글 조회
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto> modifyCommentByAdmin(@PathVariable(value = "commentId") Long commentId,
+                                                                   @RequestBody CommentRequestDto requestDto) {
+        CommentResponseDto responseDto = adminCommentManagementService.modifyCommentByAdmin(commentId, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 }

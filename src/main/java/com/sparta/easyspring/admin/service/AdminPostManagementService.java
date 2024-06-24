@@ -57,7 +57,7 @@ public class AdminPostManagementService {
     public PostResponseDto modifiedPostByAdmin(Long postId, PostRequestDto requestDto) {
         Post post = findPostById(postId);
 
-        post.update(requestDto);
+        post.updateByAdmin(requestDto);
         postRepository.save(post);
         return new PostResponseDto(post);
     }
