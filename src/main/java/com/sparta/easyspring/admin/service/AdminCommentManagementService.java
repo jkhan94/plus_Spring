@@ -36,6 +36,12 @@ public class AdminCommentManagementService {
         return new CommentResponseDto(comment);
     }
 
+    // 특정 댓글 삭제
+    public void deleteCommentByAdmin(Long commentId) {
+        Comment comment = findCommentById(commentId);
+        commentRepository.delete(comment);
+    }
+
     private Comment findCommentById(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorEnum.COMMENT_NOT_FOUND));

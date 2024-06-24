@@ -110,7 +110,7 @@ public class AdminController {
         return ResponseEntity.ok(adminCommentManagementService.getAllComments());
     }
 
-    // 전체 댓글 조회
+    // 특정 댓글 수정
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/comments/{commentId}")
     public ResponseEntity<CommentResponseDto> modifyCommentByAdmin(@PathVariable(value = "commentId") Long commentId,
@@ -118,4 +118,13 @@ public class AdminController {
         CommentResponseDto responseDto = adminCommentManagementService.modifyCommentByAdmin(commentId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    // 특정 댓글 삭제
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<String> modifyCommentByAdmin(@PathVariable(value = "commentId") Long commentId) {
+        adminCommentManagementService.deleteCommentByAdmin(commentId);
+        return ResponseEntity.ok("댓글이 삭제 되었습니다.");
+    }
+
 }
