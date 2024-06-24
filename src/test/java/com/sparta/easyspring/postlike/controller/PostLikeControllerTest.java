@@ -9,10 +9,7 @@ import com.sparta.easyspring.auth.util.JwtUtil;
 import com.sparta.easyspring.postlike.config.MockTestDataSetup;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
 import com.sparta.easyspring.postlike.service.PostLikeService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @WebMvcTest(controllers = {PostLikeController.class},
         excludeFilters = {
                 @ComponentScan.Filter(
@@ -83,6 +81,7 @@ class PostLikeControllerTest {
     }
 
     @Test
+    @Order(1)
     @DisplayName("성공 : 게시글 좋아요")
     void likePost() throws Exception {
         // given
@@ -107,6 +106,7 @@ class PostLikeControllerTest {
 
 
     @Test
+    @Order(2)
     @DisplayName("실패 : 좋아요 - 인증되지 않은 사용자")
     void likePostException() throws Exception {
         // given
@@ -128,6 +128,7 @@ class PostLikeControllerTest {
 
 
     @Test
+    @Order(3)
     @DisplayName("성공 : 게시글 좋아요 해제")
     void unlikePost() throws Exception {
         // given
@@ -152,6 +153,7 @@ class PostLikeControllerTest {
 
 
     @Test
+    @Order(4)
     @DisplayName("실패 : 좋아요 해제 - 인증되지 않은 사용자")
     void unlikePostException() throws Exception {
         // given
