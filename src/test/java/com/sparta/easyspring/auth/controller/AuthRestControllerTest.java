@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.easyspring.MockSpringSecurityFilter;
 import com.sparta.easyspring.auth.config.SecurityConfig;
 import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.AuthResponseDto;
@@ -28,6 +27,7 @@ import com.sparta.easyspring.auth.service.KakaoService;
 import com.sparta.easyspring.auth.service.NaverService;
 import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.auth.util.JwtUtil;
+import com.sparta.easyspring.config.MockSpringSecurityFilter;
 import java.lang.reflect.Field;
 import java.security.Principal;
 import org.junit.jupiter.api.BeforeAll;
@@ -248,20 +248,23 @@ public class AuthRestControllerTest {
     void refresh_success() throws Exception {
         // given
         String accessToken = "Bearer accesToken";
-        String refreshToken = "refreshToken";
+        String refreshToken = "refreshToken123";
         RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
 
+        String response = "Refresh Token 재발급";
+
         given(userService.refresh(any())).willReturn(
-            new ResponseEntity<>("Refresh Token 재발급", headers, HttpStatus.OK));
+            new ResponseEntity<>(response, headers, HttpStatus.OK));
 
         // when - then
         mvc.perform(post("/api/auth/refresh")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(requestDto))
-            ).andExpect(status().is2xxSuccessful())
+            )
+            .andExpect(status().is2xxSuccessful())
             .andExpect(content().string("Refresh Token 재발급"))
             .andDo(print());
     }
