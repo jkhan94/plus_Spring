@@ -12,10 +12,10 @@ import com.sparta.easyspring.auth.dto.ProfileResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
 import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
-import com.sparta.easyspring.auth.entity.UserTest;
+import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.auth.repository.PasswordHistoryRepository;
-import com.sparta.easyspring.auth.repository.UserRepositoryTest;
+import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import java.lang.reflect.Field;
@@ -46,7 +46,7 @@ public class UserServiceTest {
     UserService userService;
 
     @Mock
-    UserRepositoryTest userRepository;
+    UserRepository userRepository;
 
     @Mock
     PasswordHistoryRepository passwordHistoryRepository;
@@ -68,9 +68,9 @@ public class UserServiceTest {
         // given
         AuthRequestDto requestDto = new AuthRequestDto(USERNAME, PASSWORD);
 
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
 
-        given(userRepository.save(any(UserTest.class))).willReturn(user);
+        given(userRepository.save(any(User.class))).willReturn(user);
         given(userRepository.findByUsername(anyString())).willReturn(Optional.empty());
         given(passwordEncoder.encode(PASSWORD)).willReturn("encodedPassword");
 
@@ -89,7 +89,7 @@ public class UserServiceTest {
         //given
         AuthRequestDto requestDto = new AuthRequestDto(USERNAME, PASSWORD);
 
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
 
         given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
@@ -117,7 +117,7 @@ public class UserServiceTest {
     @Order(3)
     void logout_success() {
         // given
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
@@ -135,7 +135,7 @@ public class UserServiceTest {
     @Order(4)
     void withdraw_success() {
         // given
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
@@ -169,7 +169,7 @@ public class UserServiceTest {
             throw new RuntimeException(e);
         }
 
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
 
@@ -185,7 +185,7 @@ public class UserServiceTest {
     @DisplayName("프로필 업데이트 성공")
     @Order(6)
     void updateProfile_success() {
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
         String intro = "Hello World";
         UpdateProfileRequestDto requestDto = new UpdateProfileRequestDto(USERNAME, intro);
@@ -224,7 +224,7 @@ public class UserServiceTest {
         given(jwtUtil.validateToken(refreshToken)).willReturn(true);
         given(jwtUtil.getUsernameFromToken(refreshToken)).willReturn(USERNAME);
 
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         user.updateRefreshToken(refreshToken);
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
 
@@ -248,9 +248,9 @@ public class UserServiceTest {
     @Order(8)
     void getProfile_success() {
         // given
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         try {
-            Field idField = UserTest.class.getDeclaredField("id");
+            Field idField = User.class.getDeclaredField("id");
             idField.setAccessible(true);
             idField.set(user, 1L);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -277,14 +277,14 @@ public class UserServiceTest {
     @Order(9)
     void getProfiles() {
         // given
-        UserTest user1 = createMockUser(1L, USERNAME + "1", PASSWORD);
-        UserTest user2 = createMockUser(2L, USERNAME + "2", PASSWORD);
-        UserTest user3 = createMockUser(3L, USERNAME + "3", PASSWORD);
+        User user1 = createMockUser(1L, USERNAME + "1", PASSWORD);
+        User user2 = createMockUser(2L, USERNAME + "2", PASSWORD);
+        User user3 = createMockUser(3L, USERNAME + "3", PASSWORD);
         user1.updateIntroduction("hello 1");
         user2.updateIntroduction("hello 2");
         user3.updateIntroduction("hello 3");
 
-        List<UserTest> userList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         userList.add(user1);
         userList.add(user2);
         userList.add(user3);
@@ -312,10 +312,10 @@ public class UserServiceTest {
      * @param password
      * @return
      */
-    private UserTest createMockUser(Long id, String username, String password) {
-        UserTest user = new UserTest(username, password, UserRoleEnum.USER);
+    private User createMockUser(Long id, String username, String password) {
+        User user = new User(username, password, UserRoleEnum.USER);
         try {
-            Field idField = UserTest.class.getDeclaredField("id");
+            Field idField = User.class.getDeclaredField("id");
             idField.setAccessible(true);
             idField.set(user, id);
         } catch (NoSuchFieldException | IllegalAccessException e) {

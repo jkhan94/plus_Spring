@@ -1,5 +1,16 @@
 package com.sparta.easyspring.auth.controller;
 
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.easyspring.MockSpringSecurityFilter;
@@ -8,9 +19,9 @@ import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import com.sparta.easyspring.auth.dto.AuthResponseDto;
 import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
 import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
-import com.sparta.easyspring.auth.entity.UserTest;
+import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
-import com.sparta.easyspring.auth.repository.UserRepositoryTest;
+import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.auth.service.KakaoService;
@@ -41,11 +52,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-
-import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(
@@ -86,7 +92,7 @@ public class AuthRestControllerTest {
     RestTemplate restTemplate;
 
     @MockBean
-    UserRepositoryTest userRepository;
+    UserRepository userRepository;
 
     @MockBean
     JwtUtil jwtUtil;
@@ -101,7 +107,7 @@ public class AuthRestControllerTest {
             .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .build();
 
-        UserTest user = new UserTest(USERNAME, PASSWORD, UserRoleEnum.USER);
+        User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
         mockPrincipal = new UsernamePasswordAuthenticationToken(user, "",
             userDetails.getAuthorities());
