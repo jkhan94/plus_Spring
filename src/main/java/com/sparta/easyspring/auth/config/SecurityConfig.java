@@ -25,7 +25,8 @@ public class SecurityConfig {
                 authorizeHttpRequest
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resource접근 허용
                     .requestMatchers("/", "api/auth/**").permitAll()  //
-                    .anyRequest().permitAll() // 일단 모든 요청 허용
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().permitAll() // 일단 모든 요청 허용
             );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

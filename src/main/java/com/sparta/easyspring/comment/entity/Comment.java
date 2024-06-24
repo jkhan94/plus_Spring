@@ -53,6 +53,10 @@ public class Comment extends TimeStamp {
         this.comment = requestDto.getComment();
     }
 
+    public void editCommentByAdmin(CommentRequestDto requestDto) {
+        this.comment = requestDto.getComment() + " (Admin에 의해 수정되었음)";
+    }
+
     public void increaseLikes() {
         this.likes += 1L;
     }
