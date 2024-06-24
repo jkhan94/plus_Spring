@@ -134,7 +134,6 @@ public class UserService {
         }
 
         user.withdraw();
-        user.clearRefreshToken();
         userRepository.save(user);
 
         AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
@@ -192,7 +191,7 @@ public class UserService {
         }
 
         String updateName = requestDto.getUsername();
-        if (updateName.matches(USERID_REGEX)) {
+        if (!updateName.matches(USERID_REGEX)) {
             throw new CustomException(INVALID_USERNAME);
         }
 
