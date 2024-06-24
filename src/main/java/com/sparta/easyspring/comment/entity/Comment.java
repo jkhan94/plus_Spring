@@ -5,15 +5,8 @@ import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.timestamp.TimeStamp;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -36,7 +29,10 @@ public class Comment extends TimeStamp {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    @Column(nullable = false)
     private String comment;
+
+    @Column(nullable = false)
     private Long likes;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
