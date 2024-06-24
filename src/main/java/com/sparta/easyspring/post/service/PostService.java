@@ -2,7 +2,7 @@ package com.sparta.easyspring.post.service;
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.service.UserService;
-import com.sparta.easyspring.exception.ErrorEnum;
+import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.follow.entity.Follow;
 import com.sparta.easyspring.follow.service.FollowService;
 import com.sparta.easyspring.post.dto.PostRequestDto;
@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.sparta.easyspring.exception.ErrorEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class PostService {
     public PostResponseDto editPost(Long postId, PostRequestDto requestDto, User user) {
         Post post = findPostbyId(postId);
         if(!post.getUser().getId().equals(user.getId())){
-            throw new IllegalArgumentException(ErrorEnum.INCORRECT_USER.getMsg());
+            throw new CustomException(INCORRECT_USER);
         }
         post.update(requestDto);
         postRepository.save(post);
@@ -60,7 +62,7 @@ public class PostService {
     public void deletePost(Long postId, User user) {
         Post post = findPostbyId(postId);
         if(!post.getUser().getId().equals(user.getId())){
-            throw new IllegalArgumentException(ErrorEnum.INCORRECT_USER.getMsg());
+            throw new CustomException(INCORRECT_USER);
         }
         postRepository.delete(post);
     }
@@ -68,7 +70,7 @@ public class PostService {
         User checkUser = userService.findUserById(followingId);
         Follow checkFollow = followService.findFollowById(checkUser.getId(),user);
         if(checkFollow==null){
-            throw new IllegalArgumentException("해당 사용자를 팔로우하지 않았습니다.");
+            throw new CustomException(NOT_FOLLOW_USER);
         }
         Sort sort = Sort.by(Sort.Direction.DESC,sortBy);
         Pageable pageable = PageRequest.of(page,5,sort);
@@ -96,7 +98,7 @@ public class PostService {
 
     public Post findPostbyId(Long postId){
         Post post = postRepository.findById(postId).orElseThrow(
-                ()->new IllegalArgumentException(ErrorEnum.POST_NOT_FOUND.getMsg())
+                ()->new CustomException(POST_NOT_FOUND)
         );
         return post;
     }
