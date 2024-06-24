@@ -32,13 +32,13 @@ public class SecurityConfig {
                                 .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                                 .anyRequest().permitAll() // 일단 모든 요청 허용
                 )
-                //
                 .exceptionHandling((exceptionHandling) ->
                 exceptionHandling
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            // USER_ROLE이 BANNED인 경우 예외 처리
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.getWriter().write("접근 거부됨 : BAN된 유저입니다.");
+                            if (request.isUserInRole("BANNED")) {
+                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                                response.getWriter().write("접근 거부됨 : BAN된 유저입니다.");
+                            }
                         })
                 );
 
