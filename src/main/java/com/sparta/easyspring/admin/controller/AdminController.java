@@ -43,13 +43,13 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
-    // 특정 회원 삭제
+    // 특정 회원 탈퇴
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/users")
-    public ResponseEntity<String> deleteUserByAdmin(@RequestParam("userId") Long userId) {
-        adminUserManagementService.deleteUserByAdmin(userId);
+    public ResponseEntity<String> withdrawUserByAdmin(@RequestParam("userId") Long userId) {
+        adminUserManagementService.withdrawUserByAdmin(userId);
 
-        return ResponseEntity.ok("해당 유저의 삭제가 완료되었습니다.");
+        return ResponseEntity.ok("해당 유저의 탈퇴가 완료되었습니다.");
     }
 
     // 게시글 전체 목록 조회
