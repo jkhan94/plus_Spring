@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public enum ErrorEnum {
-
-    USER_NOT_FOUND(400, "등록되지 않은 사용자입니다."),
-    INCORRECT_USER(400, "사용자가 동일하지 않습니다."),
-
+    
     // Token
     INVALID_TOKEN(400, "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRATION(400, "만료된 토큰입니다"),
