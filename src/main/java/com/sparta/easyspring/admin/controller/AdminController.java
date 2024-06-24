@@ -1,8 +1,10 @@
 package com.sparta.easyspring.admin.controller;
 
+import com.sparta.easyspring.admin.dto.AllOfCommentResponseDto;
 import com.sparta.easyspring.admin.dto.AllOfUserResponseDto;
 import com.sparta.easyspring.admin.dto.PostWithStatusRequestDto;
 import com.sparta.easyspring.admin.dto.RoleChangeRequestDto;
+import com.sparta.easyspring.admin.service.AdminCommentManagementService;
 import com.sparta.easyspring.admin.service.AdminPostManagementService;
 import com.sparta.easyspring.admin.service.AdminUserManagementService;
 import com.sparta.easyspring.post.dto.PostRequestDto;
@@ -21,6 +23,7 @@ public class AdminController {
 
     private final AdminUserManagementService adminUserManagementService;
     private final AdminPostManagementService adminPostManagementService;
+    private final AdminCommentManagementService adminCommentManagementService;
 
     // 특정 유저의 역할을 변경하는 API
     @PreAuthorize("hasRole('ADMIN')")
@@ -96,5 +99,12 @@ public class AdminController {
         adminPostManagementService.deletePostByAdmin(postId);
 
         return ResponseEntity.ok("삭제 되었습니다.");
+    }
+
+    // 전체 댓글 조회
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/comments")
+    public ResponseEntity<List<AllOfCommentResponseDto>> getAllCommentsByAdmin(){
+        return ResponseEntity.ok(adminCommentManagementService.getAllComments());
     }
 }
