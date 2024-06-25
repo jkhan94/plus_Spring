@@ -35,11 +35,12 @@ public class AdminUserManagementService {
     }
 
     @Transactional
-    public void deleteUserByAdmin(Long userId) {
+    public void withdrawUserByAdmin(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorEnum.USER_NOT_FOUND));
 
-        userRepository.delete(user);
+        user.withdraw();
+        userRepository.save(user);
     }
 
     private AllOfUserResponseDto entityToDto(User user) {
