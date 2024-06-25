@@ -1,6 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=SNS%20SITE&fontSize=90)
 ## Team
-<table>
+<div style="text-align: center;">
+  <table style="margin: 0 0 0 100px ;">
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/kopite97"><img src="https://avatars.githubusercontent.com/u/144471977?v=4" width="100px;" alt=""/><br /><sub><b> 팀장 : 노석준 </b></sub></a><br /></td>
@@ -11,6 +12,7 @@
     </tr>
   </tbody>
 </table>
+</div>
 <br/>
 
 <summary><big>노석준</big></summary>
@@ -61,7 +63,7 @@
 ![OAuth 2.0](https://img.shields.io/badge/OAuth-EB5424.svg?style=for-the-badge&logo=auth0&logoColor=white)
 ![AWS S3](https://img.shields.io/badge/AWS%20S3-569A31.svg?style=for-the-badge&logo=amazons3&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37.svg?style=for-the-badge&logo=postman&logoColor=white)
-
+<br/>
 
 
 ## Develop Architecture
@@ -73,12 +75,17 @@
 <br/>
 
 ## API 명세서
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/947c9796-e3b3-4f8c-9457-880a1244dfcc/Untitled.png?id=9160abcf-76ad-4f97-a11b-131489c219ba&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=5GLURLV5R8D3OCm_HP8TeKa8bDOpEMusryhQ68uAb2A&downloadName=Untitled.png">
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/2c7a68fb-1d71-4ea7-9b32-8b023b5efabb/Untitled.png?id=4932533f-f4a4-45c0-987e-b73ddec41249&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=lv5a3CYyprJn9A6KQeOXZlxg7rG0lDLACj8o5Yl9JEo&downloadName=Untitled.png">
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/e44c64f4-8ac3-40db-8c10-304e157267dc/Untitled.png?id=c236c44f-4460-4a60-b643-7a63b123dcfb&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=rCkO-7DzmKdKsB03znk4m72EBkGUnCNSS7S5l4BqpYM&downloadName=Untitled.png">
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/17b67f72-aa37-49a8-b601-358b3d2ada5f/Untitled.png?id=117c1745-42f0-4dac-a859-61ba77278ff6&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=rVEtN3THuoeJwXUbvx7tM0nlkj2ozNBO-bTmldkJJ9E&downloadName=Untitled.png">
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/f2c42a7b-0d3f-4740-830c-0dcb03224f46/Untitled.png?id=6ee6b0c5-a44e-40be-a1bd-c1017af62399&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=EoGuuujTd5TsxNOAROzx0ypqa7exNwIY-Xrhbq9VC4E&downloadName=Untitled.png">
-<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/c33d8e07-c9c1-4207-99cf-f9cab102b3bf/Untitled.png?id=8d96a0e1-2c8d-4c4d-bd1e-a62fce3626c0&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=KtBx4--ZWmeaZFQOAOWUwmW__aj2geE-D5M4SUSS8bE&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/46f46bdc-3f99-4f35-9a45-633ef20fded7/Untitled.png?id=fffaed1c-7bd3-4927-b4b7-69433c63aa00&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=s7pvkXrNAuvCTRgbUD-WyFWELjsjpuItM5i_s6wYW8A&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/29dc698e-ff07-4a85-8865-801593f06ed5/Untitled.png?id=0598d501-f727-4a41-87de-2980c7129b61&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=zAN643RAY1so3bNTATUFzRtEJ50ZftqeNe4WFwta2sY&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/aa412386-fcca-45f2-81e8-c0fa02c0cbfe/Untitled.png?id=477bb901-3feb-4df1-9db6-6998c9f88e89&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=AfAH2Z2S4Q7gcnVR5sVrr8Zx_4Tl6PzLxCGJaNKUkTg&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/8cc48c29-6cca-465f-8a94-23459a224c27/Untitled.png?id=d05e28b7-fcf8-444b-a20a-01fa2bd6f36d&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=56jm2NcaipaNxccGXb-uioKbv7VqjXKGD1c3ibdDLgc&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/82060bec-6f37-4a98-8759-21ef2b0b314c/Untitled.png?id=cb5ec59a-4478-44dd-8d55-e455d3af6b0c&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=YmLw_DRCSJ8-7u31bZRwbsDQNlA5bx5QJ6cT6g280ao&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/8a976a78-a1a3-495e-9b0d-d580b2014fa8/Untitled.png?id=fa03b1f2-95cd-4134-88c7-b362587513f2&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=nIHuAlpoPJHZivGy5Tirogvm0cDloMAmD0bNB4qwZbw&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/2b5ccfe2-1c51-4755-8df9-34b213bb07e0/Untitled.png?id=2c084b83-20cc-4021-b2f4-e8bf1fe602cc&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=Pl3fbKmjxsLeMPxxjWSzG-1VfKEhylNmkxaBQQJ3EUA&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/1ad43815-bc70-4fb4-a416-e3c08fcfdbce/Untitled.png?id=c2b00da5-a890-4aea-9e5e-dd6675478e51&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719367200000&signature=3ESbtTEY2LWLiRBwF4TsYraZMWP34vZ6WqX1fvkJDmg&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/184e98f5-5b66-4dc5-ba5b-b67ad7d37142/Untitled.png?id=5667c4ea-3a50-4901-81c4-0db0d52599bf&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719374400000&signature=nCfHFyD4F-jL4g_dSidTY1NJAZejWeYrdOghiRim8-g&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/c31ff4e0-97cb-4e78-bb11-7940091551a4/Untitled.png?id=75ad1053-8791-4aaa-92ab-d31ae61c22a8&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719374400000&signature=iFS3Y5kd-JRWJvh5FD7l3zkyvsdvsqG8ouNryRU-ujY&downloadName=Untitled.png">
+<img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/9ab05164-f1d9-4179-8cdb-579d4909d1ff/Untitled.png?id=6e729123-c051-4db8-8bb6-17ac5ff8c859&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1719374400000&signature=wRSKNB0nHQm0F6pPkl66lneCCi45dMf3X-U3BNATdlc&downloadName=Untitled.png">
 <br/>
 
 ## Git Rules
