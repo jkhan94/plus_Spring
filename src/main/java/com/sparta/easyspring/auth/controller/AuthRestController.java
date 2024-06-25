@@ -9,6 +9,8 @@ import com.sparta.easyspring.auth.service.KakaoService;
 import com.sparta.easyspring.auth.service.NaverService;
 import com.sparta.easyspring.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthRestController {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthRestController.class);
     private final UserService userService;
     private final KakaoService kakaoService;
     private final NaverService naverService;
@@ -63,11 +66,17 @@ public class AuthRestController {
 
     @GetMapping("/login/kakao")
     public ResponseEntity<AuthResponseDto> kakaoLogin(@RequestParam String code) throws Exception {
-        return kakaoService.login(code);
+        ResponseEntity<AuthResponseDto> response = kakaoService.login(code);
+        log.info("userid :"+response.getBody().getId());
+        log.info("username :" + response.getBody().getUsername());
+        return response;
     }
 
     @GetMapping("/login/naver")
     public ResponseEntity<AuthResponseDto> naverLogin(@RequestParam String code) throws Exception{
-        return naverService.login(code);
+        ResponseEntity<AuthResponseDto> response = naverService.login(code);
+        log.info("userid :"+response.getBody().getId());
+        log.info("username :" + response.getBody().getUsername());
+        return response;
     }
 }
