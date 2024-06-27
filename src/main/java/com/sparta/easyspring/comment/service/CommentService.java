@@ -8,6 +8,7 @@ import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
+import com.sparta.easyspring.post.dto.PostResponseDto;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,12 @@ public class CommentService {
             commentResponseDtoList.add(entityToDto(comment));
         }
         return commentResponseDtoList;
+    }
+
+    public CommentResponseDto getComment(Long commentId) {
+        Comment comment = findCommentbyId(commentId);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+        return commentResponseDto;
     }
 
     @Transactional
@@ -94,4 +101,6 @@ public class CommentService {
         Comment comment = findCommentbyId(commentId);
         comment.decreaseLikes();
     }
+
+
 }

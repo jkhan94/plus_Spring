@@ -3,6 +3,7 @@ package com.sparta.easyspring.comment.controller;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.comment.service.CommentService;
+import com.sparta.easyspring.post.dto.PostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,15 @@ public class CommentController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<List<CommentResponseDto>> getComment(@PathVariable("postId") Long postId) {
+    public ResponseEntity<List<CommentResponseDto>> getAllComment(@PathVariable("postId") Long postId) {
         return ResponseEntity.ok().body(commentService.getAllComments(postId));
+    }
+
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDto> getComment(@PathVariable(name = "commentId") Long commentId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(commentService.getComment(commentId));
     }
 
     @PutMapping("/{commentId}")
