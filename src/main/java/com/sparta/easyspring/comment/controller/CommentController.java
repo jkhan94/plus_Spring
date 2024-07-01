@@ -29,7 +29,7 @@ public class CommentController {
         return ResponseEntity.ok().body(commentService.getAllComments(postId));
     }
 
-    @GetMapping("/{commentId}")
+    @GetMapping("/single/{commentId}")
     public ResponseEntity<CommentResponseDto> getComment(@PathVariable(name = "commentId") Long commentId){
         return ResponseEntity
                 .status(HttpStatus.OK)
