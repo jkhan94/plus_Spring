@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "comments")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Comment extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
