@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import com.sparta.easyspring.mylikes.service.MyLikesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +40,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final PasswordHistoryRepository passwordHistoryRepository;
     private final JwtUtil jwtUtil;
+
+    private final MyLikesService myLikesService;
 
     private final String USERID_REGEX = "^[a-z0-9]{4,10}$";
     private final String USERPASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{}|;:'\",.<>/?]).{8,15}$";
@@ -249,8 +253,10 @@ public class UserService {
         Long userId = user.getId();
         String username = user.getUsername();
         String introduction = user.getIntroduction();
+        int likedPosts = myLikesService.getCountLikedPosts(userId);
+        int likedComments=myLikesService.getCountLikedComments(userId);
 
-        ProfileResponseDto responseDto = new ProfileResponseDto(userId, username, introduction);
+        ProfileResponseDto responseDto = new ProfileResponseDto(userId, username, introduction,likedPosts,likedComments);
 
         return ResponseEntity.ok().body(responseDto);
     }

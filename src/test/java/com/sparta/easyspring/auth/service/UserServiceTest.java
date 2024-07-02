@@ -367,7 +367,7 @@ public class UserServiceTest {
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(USERNAME, response.getBody().getUsername());
-        assertEquals(intro, response.getBody().getIndroduction());
+        assertEquals(intro, response.getBody().getIntroduction());
     }
 
     @Test
@@ -491,7 +491,7 @@ public class UserServiceTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(USERNAME, response.getBody().getUsername());
         assertEquals(1L, response.getBody().getId());
-        assertEquals(intro, response.getBody().getIndroduction());
+        assertEquals(intro, response.getBody().getIntroduction());
     }
 
     @Test
@@ -534,9 +534,9 @@ public class UserServiceTest {
         assertEquals(1L, response.getBody().get(0).getId());
         assertEquals(2L, response.getBody().get(1).getId());
         assertEquals(3L, response.getBody().get(2).getId());
-        assertEquals("hello 1", response.getBody().get(0).getIndroduction());
-        assertEquals("hello 2", response.getBody().get(1).getIndroduction());
-        assertEquals("hello 3", response.getBody().get(2).getIndroduction());
+        assertEquals("hello 1", response.getBody().get(0).getIntroduction());
+        assertEquals("hello 2", response.getBody().get(1).getIntroduction());
+        assertEquals("hello 3", response.getBody().get(2).getIntroduction());
     }
 
     @Test

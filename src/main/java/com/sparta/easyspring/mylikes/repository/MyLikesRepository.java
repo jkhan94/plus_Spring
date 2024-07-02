@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -81,5 +80,23 @@ public class MyLikesRepository {
                 .fetch();
 
         return new PageImpl<>(result,pageable, count.size());
+    }
+
+    public int countAllLikedPosts(Long userId) {
+        return queryFactory.select(post)
+                .from(post)
+                .join(postLike).on(postLike.post.eq(post))
+                .where(postLike.user.id.eq(userId))
+                .fetch()
+                .size();
+    }
+
+    public int countAllLikedComments(Long userId) {
+        return queryFactory.select(comment)
+                .from(comment)
+                .join(commentLike).on(commentLike.comment.eq(comment))
+                .where(commentLike.user.id.eq(userId))
+                .fetch()
+                .size();
     }
 }
