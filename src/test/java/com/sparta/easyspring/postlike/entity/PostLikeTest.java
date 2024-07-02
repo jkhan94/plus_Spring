@@ -23,7 +23,7 @@ class PostLikeTest {
         long TEST_POST_LIKES = 1L;
 
         User TEST_USER = MockTestDataSetup.mockTestUserSetup();
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
 
         // when
         postLike = new PostLike(TEST_USER, TEST_POST);

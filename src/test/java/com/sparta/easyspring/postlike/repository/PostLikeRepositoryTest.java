@@ -35,7 +35,7 @@ class PostLikeRepositoryTest {
         User TEST_USER = MockTestDataSetup.mockTestUserSetup();
         userRepository.save(TEST_USER);
 
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
         postRepository.save(TEST_POST);
 
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);

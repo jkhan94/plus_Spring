@@ -17,10 +17,10 @@ class CommentLikeTest {
     void createCommentLike(){
         // given
         User TEST_USER = MockTestDataSetup.mockTestUserSetup();
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
 
         // when
-        Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(TEST_USER,TEST_POST);
+        Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,TEST_USER,TEST_POST);
 
         // then
         assertNotNull(TEST_COMMENT);

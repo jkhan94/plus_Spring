@@ -41,10 +41,10 @@ class CommentLikeRepositoryTest {
         User TEST_USER = MockTestDataSetup.mockTestUserSetup();
         userRepository.save(TEST_USER);
 
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
         postRepository.save(TEST_POST);
 
-        Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(TEST_USER,TEST_POST);
+        Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,TEST_USER,TEST_POST);
         commentRepository.save(TEST_COMMENT);
 
         CommentLike TEST_COMMENTLIKE = new CommentLike(TEST_USER,TEST_COMMENT);

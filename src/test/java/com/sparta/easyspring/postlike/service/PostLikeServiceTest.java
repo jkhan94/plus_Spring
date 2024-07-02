@@ -55,7 +55,7 @@ class PostLikeServiceTest {
         long TEST_POST_ID = 1L;
         String expectedMsg = "게시글 좋아요 완료";
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -78,7 +78,7 @@ class PostLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_POST_ID = 1L;
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -98,7 +98,7 @@ class PostLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_POST_ID = 1L;
 
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -119,7 +119,7 @@ class PostLikeServiceTest {
         long TEST_POST_ID = 1L;
         String expectedMsg = "게시글 좋아요 해제 완료";
 
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
         PostLike TEST_POSTLIKE = new PostLike(TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
@@ -143,7 +143,7 @@ class PostLikeServiceTest {
         long ANOTHER_USER_ID = 2L;
         long TEST_POST_ID = 1L;
 
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(postService.findPostbyId(TEST_POST_ID)).willReturn(TEST_POST);
