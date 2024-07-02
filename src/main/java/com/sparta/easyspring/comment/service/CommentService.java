@@ -8,7 +8,6 @@ import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
-import com.sparta.easyspring.post.dto.PostResponseDto;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class CommentService {
         User user = userDetails.getUser();
         Post post = postService.findPostbyId(postId);
 
-        Comment comment = new Comment(user, post, requestDto.getComment());
+        Comment comment = new Comment(user, post, requestDto.getContents());
 
         commentRepository.save(comment);
 
@@ -79,7 +78,7 @@ public class CommentService {
     }
 
     private CommentResponseDto entityToDto(Comment comment) {
-        return new CommentResponseDto(comment.getId(), comment.getComment(), comment.getLikes(),
+        return new CommentResponseDto(comment.getId(), comment.getContents(), comment.getLikes(),
                 comment.getUser().getId(), comment.getPost().getId(), comment.getCreatedAt(), comment.getModifiedAt());
     }
 

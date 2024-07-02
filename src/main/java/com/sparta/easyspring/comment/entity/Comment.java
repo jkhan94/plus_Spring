@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 @Getter
 @NoArgsConstructor
 public class Comment extends TimeStamp {
@@ -30,7 +30,7 @@ public class Comment extends TimeStamp {
     private Post post;
 
     @Column(nullable = false)
-    private String comment;
+    private String contents;
 
     @Column(nullable = false)
     private Long likes;
@@ -38,19 +38,19 @@ public class Comment extends TimeStamp {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLike> commentLikes = new ArrayList<>();
 
-    public Comment(User user, Post post, String comment) {
+    public Comment(User user, Post post, String contents) {
         this.user = user;
         this.post = post;
-        this.comment = comment;
+        this.contents = contents;
         this.likes = 0L;
     }
 
     public void editComment(CommentRequestDto requestDto) {
-        this.comment = requestDto.getComment();
+        this.contents = requestDto.getContents();
     }
 
     public void editCommentByAdmin(CommentRequestDto requestDto) {
-        this.comment = requestDto.getComment() + " (Admin에 의해 수정되었음)";
+        this.contents = requestDto.getContents() + " (Admin에 의해 수정되었음)";
     }
 
     public void increaseLikes() {

@@ -7,7 +7,6 @@ import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
-import com.sparta.easyspring.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +50,6 @@ public class AdminCommentManagementService {
 
     private AllOfCommentResponseDto entityToDto(Comment comment) {
         // User를 UserResponseDto로 변환하는 로직을 작성
-        return new AllOfCommentResponseDto( comment.getUser().getId(), comment.getPost().getId() ,comment.getId(), comment.getComment());
+        return new AllOfCommentResponseDto( comment.getUser().getId(), comment.getPost().getId() ,comment.getId(), comment.getContents());
     }
 }
