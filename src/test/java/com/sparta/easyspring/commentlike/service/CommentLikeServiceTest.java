@@ -60,8 +60,8 @@ class CommentLikeServiceTest {
         long TEST_COMMENT_ID = 1L;
         String expectedMsg = "댓글 좋아요 완료";
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(ANOTHER_USER,TEST_POST);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
@@ -96,7 +96,7 @@ class CommentLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_COMMENT_ID = 1L;
 
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(ANOTHER_USER,TEST_POST);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
 
         CommentLike commentLike = new CommentLike(TEST_USER,TEST_COMMENT);
 
@@ -115,7 +115,7 @@ class CommentLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_COMMENT_ID = 1L;
 
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(TEST_USER,TEST_POST);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,TEST_USER,TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
@@ -133,8 +133,8 @@ class CommentLikeServiceTest {
         long TEST_COMMENT_ID = 1L;
         String expectedMsg = "댓글 좋아요 해제 완료";
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(ANOTHER_USER,TEST_POST);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
 
         CommentLike TEST_COMMENTLIKE = new CommentLike(TEST_USER,TEST_COMMENT);
 
@@ -171,8 +171,8 @@ class CommentLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_COMMENT_ID = 1L;
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(ANOTHER_USER);
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(ANOTHER_USER,TEST_POST);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
