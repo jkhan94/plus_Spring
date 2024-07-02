@@ -1,6 +1,7 @@
 package com.sparta.easyspring.mylikes.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.post.entity.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -8,10 +9,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.sparta.easyspring.comment.entity.QComment.comment;
+import static com.sparta.easyspring.commentlike.entity.QCommentLike.commentLike;
 import static com.sparta.easyspring.post.entity.QPost.post;
 import static com.sparta.easyspring.postlike.entity.QPostLike.postLike;
 
@@ -55,6 +59,25 @@ public class MyLikesRepository {
                 .from(post)
                 .join(postLike).on(postLike.post.eq(post))
                 .where(postLike.user.id.eq(userId))
+                .fetch();
+
+        return new PageImpl<>(result,pageable, count.size());
+    }
+
+    public Page<Comment> findAllLikeComments(long userId, Pageable pageable) {
+        List<Comment> result = queryFactory.select(comment)
+                .from(comment)
+                .join(commentLike).on(commentLike.comment.eq(comment))
+                .where(commentLike.user.id.eq(userId))
+                .orderBy(comment.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        List<Comment> count = queryFactory.select(comment)
+                .from(comment)
+                .join(commentLike).on(commentLike.comment.eq(comment))
+                .where(commentLike.user.id.eq(userId))
                 .fetch();
 
         return new PageImpl<>(result,pageable, count.size());

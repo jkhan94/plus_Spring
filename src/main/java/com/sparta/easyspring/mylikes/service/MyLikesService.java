@@ -1,5 +1,6 @@
 package com.sparta.easyspring.mylikes.service;
 
+import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.mylikes.repository.MyLikesRepository;
 import com.sparta.easyspring.post.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,11 @@ public class MyLikesService {
         return postList;
     }
 
+    public List<CommentResponseDto> getAllLikedComment(long userId, int page, String sortBy) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, sortBy));
+
+        Page<CommentResponseDto> commentPage = myLikesRepository.findAllLikeComments(userId, pageable).map(CommentResponseDto::new);
+        List<CommentResponseDto> commentList = commentPage.getContent();
+        return commentList;
+    }
 }
