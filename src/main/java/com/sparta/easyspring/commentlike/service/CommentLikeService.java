@@ -1,15 +1,11 @@
-
 package com.sparta.easyspring.commentlike.service;
-
 
 
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.service.UserService;
 import com.sparta.easyspring.comment.entity.Comment;
-
-import com.sparta.easyspring.commentlike.entity.CommentLike;
-
 import com.sparta.easyspring.comment.service.CommentService;
+import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.commentlike.repository.CommentLikeRepository;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
@@ -29,7 +25,7 @@ public class CommentLikeService {
     @Transactional
     public ResponseEntity<String> likeComment(Long userId, Long commentId, User loginUser) {
         // 로그인 유저와 userId 비교
-        checkUser(userId,loginUser);
+        checkUser(userId, loginUser);
 
         // 유저, 댓글 있는지 확인
         User user = userService.findUserById(userId);
@@ -46,7 +42,7 @@ public class CommentLikeService {
         }
 
         // 위에 조건 다 통과하면 댓글 좋아요 추가
-        CommentLike commentLike = new CommentLike(user,comment);
+        CommentLike commentLike = new CommentLike(user, comment);
         commentLikeRepository.save(commentLike);
         // 숫자 증가
         commentService.increaseLikes(commentId);
@@ -57,7 +53,7 @@ public class CommentLikeService {
     @Transactional
     public ResponseEntity<String> unlikeComment(Long userId, Long commentId, User loginUser) {
         // 로그인 유저와 userId 비교
-        checkUser(userId,loginUser);
+        checkUser(userId, loginUser);
 
         // 유저, 댓글 있는지 확인
         User user = userService.findUserById(userId);
@@ -76,7 +72,7 @@ public class CommentLikeService {
     }
 
     private void checkUser(Long userId, User loginUser) {
-        if(!userId.equals(loginUser.getId())){
+        if (!userId.equals(loginUser.getId())) {
             throw new CustomException(ErrorEnum.USER_NOT_AUTHENTICATED);
         }
     }

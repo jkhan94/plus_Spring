@@ -82,21 +82,21 @@ public class CommentService {
                 comment.getUser().getId(), comment.getPost().getId(), comment.getCreatedAt(), comment.getModifiedAt());
     }
 
-    public Comment findCommentbyId(Long commentId){
+    public Comment findCommentbyId(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                ()->new IllegalArgumentException(ErrorEnum.COMMENT_NOT_FOUND.getMsg())
+                () -> new IllegalArgumentException(ErrorEnum.COMMENT_NOT_FOUND.getMsg())
         );
         return comment;
     }
 
     @Transactional
-    public void increaseLikes(Long commentId){
+    public void increaseLikes(Long commentId) {
         Comment comment = findCommentbyId(commentId);
         comment.increaseLikes();
     }
 
     @Transactional
-    public void decreaseLikes(Long commentId){
+    public void decreaseLikes(Long commentId) {
         Comment comment = findCommentbyId(commentId);
         comment.decreaseLikes();
     }

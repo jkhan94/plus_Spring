@@ -1,19 +1,6 @@
 package com.sparta.easyspring.auth.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.anyString;
-import static org.mockito.BDDMockito.given;
-
-import com.sparta.easyspring.auth.dto.AuthRequestDto;
-import com.sparta.easyspring.auth.dto.AuthResponseDto;
-import com.sparta.easyspring.auth.dto.ProfileResponseDto;
-import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
-import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
-import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
+import com.sparta.easyspring.auth.dto.*;
 import com.sparta.easyspring.auth.entity.PasswordHistory;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
@@ -22,16 +9,7 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import com.sparta.easyspring.exception.CustomException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +17,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -266,7 +254,7 @@ public class UserServiceTest {
     @Order(5)
     void updatePassword_success() {
         UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
-            "123abcAbc!2");
+                "123abcAbc!2");
 
         User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.of(user));
@@ -286,7 +274,7 @@ public class UserServiceTest {
     void updatePassword_Should_ThrowException_WhenNotMatchUsername() {
         // given
         UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
-            PASSWORD + "123");
+                PASSWORD + "123");
         given(userRepository.findByUsername(anyString())).willReturn(Optional.empty());
 
         // when - then
@@ -299,7 +287,7 @@ public class UserServiceTest {
     void updatePassword_Should_ThrowException_WhenNotMatchPassword() {
         // given
         UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
-            PASSWORD + "123");
+                PASSWORD + "123");
         User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
 
@@ -313,7 +301,7 @@ public class UserServiceTest {
     void updatePassword_Should_ThrowException_WhenNotMatchRegexNewPassword() {
         // given
         UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
-            "InvalidPassword");
+                "InvalidPassword");
         User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
@@ -328,7 +316,7 @@ public class UserServiceTest {
     void updatePassword_Should_ThrowException_WhenExistPasswordHistory() {
         // given
         UpdatePasswordRequestDto requestDto = new UpdatePasswordRequestDto(USERNAME, PASSWORD,
-            PASSWORD + "12");
+                PASSWORD + "12");
         User user = createMockUser(1L, USERNAME, PASSWORD);
         given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
@@ -362,7 +350,7 @@ public class UserServiceTest {
 
         // when
         ResponseEntity<ProfileResponseDto> response = userService.updateProfile(userDetails,
-            requestDto);
+                requestDto);
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -383,25 +371,25 @@ public class UserServiceTest {
 
         // when - then
         assertThrows(CustomException.class,
-            () -> userService.updateProfile(userDetails, requestDto));
+                () -> userService.updateProfile(userDetails, requestDto));
 
     }
 
     @Test
     @DisplayName("프로필 업데이트 실패 : 유저이름 정규식 불만족")
     @Order(22)
-    void updateProfile_Should_ThrowException_WhenNotMatchRegexUsername(){
+    void updateProfile_Should_ThrowException_WhenNotMatchRegexUsername() {
         // given
         User user = new User(USERNAME, PASSWORD, UserRoleEnum.USER);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
         given(userRepository.findByUsername(anyString())).willReturn(Optional.of(user));
 
         UpdateProfileRequestDto requestDto = new UpdateProfileRequestDto("invalidUsername",
-            "hello");
+                "hello");
 
         // when - then
         assertThrows(CustomException.class,
-            () -> userService.updateProfile(userDetails, requestDto));
+                () -> userService.updateProfile(userDetails, requestDto));
     }
 
     @Test
@@ -436,7 +424,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("리프레쉬 실패 : 유효하지 않은 토큰")
     @Order(23)
-    void refresh_Should_ThrowException_WhenInvalidToken(){
+    void refresh_Should_ThrowException_WhenInvalidToken() {
         // given
         String refreshToken = "refreshToken";
         RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
@@ -450,7 +438,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("리프레쉬 실패 : 유저이름 불일치")
     @Order(24)
-    void refresh_Should_ThrowException_WhenNotMatchUsername(){
+    void refresh_Should_ThrowException_WhenNotMatchUsername() {
         // given
         String refreshToken = "refreshToken";
         RefreshTokenRequestDto requestDto = new RefreshTokenRequestDto(refreshToken);
@@ -462,7 +450,7 @@ public class UserServiceTest {
         given(userRepository.findByUsername(USERNAME)).willReturn(Optional.empty());
 
         // when - then
-        assertThrows(CustomException.class,()->userService.refresh(requestDto));
+        assertThrows(CustomException.class, () -> userService.refresh(requestDto));
 
     }
 
@@ -497,7 +485,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("프로필 얻기 실패 : 유저이름 불일치")
     @Order(25)
-    void getProfile_Should_ThrowException_WhenNotMatchUsername(){
+    void getProfile_Should_ThrowException_WhenNotMatchUsername() {
         // given
         given(userRepository.findById(anyLong())).willReturn(Optional.empty());
 
@@ -542,7 +530,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("모든 프로필 얻기 실패 : 유저 없음 ")
     @Order(26)
-    void getProfiles_Should_ThrowException_WhenEmptyUser(){
+    void getProfiles_Should_ThrowException_WhenEmptyUser() {
         // given
         List<User> userList = new ArrayList<>();
         given(userRepository.findAll()).willReturn(userList);

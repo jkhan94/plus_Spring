@@ -1,11 +1,6 @@
 package com.sparta.easyspring.auth.service;
 
-import com.sparta.easyspring.auth.dto.AuthRequestDto;
-import com.sparta.easyspring.auth.dto.AuthResponseDto;
-import com.sparta.easyspring.auth.dto.ProfileResponseDto;
-import com.sparta.easyspring.auth.dto.RefreshTokenRequestDto;
-import com.sparta.easyspring.auth.dto.UpdatePasswordRequestDto;
-import com.sparta.easyspring.auth.dto.UpdateProfileRequestDto;
+import com.sparta.easyspring.auth.dto.*;
 import com.sparta.easyspring.auth.entity.PasswordHistory;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.entity.UserRoleEnum;
@@ -15,11 +10,6 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
 import com.sparta.easyspring.auth.util.JwtUtil;
 import com.sparta.easyspring.exception.CustomException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
 import com.sparta.easyspring.mylikes.service.MyLikesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +18,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 import static com.sparta.easyspring.exception.ErrorEnum.*;
 
@@ -103,7 +98,7 @@ public class UserService {
 
         AuthResponseDto responseDto = new AuthResponseDto(user.getId(), user.getUsername());
 
-        return new ResponseEntity<>(responseDto,headers,HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
     public ResponseEntity<AuthResponseDto> logout(UserDetailsImpl userDetails) {
@@ -155,7 +150,7 @@ public class UserService {
         }
 
         List<PasswordHistory> passwordHisList = passwordHistoryRepository.findByUserId(
-            user.getId());
+                user.getId());
 
         for (var ph : passwordHisList) {
             if (passwordEncoder.matches(requestDto.getNewpassword(), ph.getPassword())) {
@@ -165,7 +160,7 @@ public class UserService {
 
         if (passwordHisList.size() >= 3) {
             PasswordHistory delPassword = passwordHisList.stream()
-                .min(Comparator.comparing(PasswordHistory::getCreatedAt)).orElseThrow();
+                    .min(Comparator.comparing(PasswordHistory::getCreatedAt)).orElseThrow();
             passwordHistoryRepository.delete(delPassword);
         }
 
@@ -183,7 +178,7 @@ public class UserService {
     }
 
     public ResponseEntity<ProfileResponseDto> updateProfile(UserDetailsImpl userDetails,
-        UpdateProfileRequestDto requestDto) {
+                                                            UpdateProfileRequestDto requestDto) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElse(null);
 
         if (user == null) {
@@ -211,7 +206,7 @@ public class UserService {
         headers.set("Refresh-Token", refreshToken);
 
         ProfileResponseDto responseDto = new ProfileResponseDto(user.getId(), user.getUsername(),
-            user.getIntroduction());
+                user.getIntroduction());
 
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
@@ -243,20 +238,20 @@ public class UserService {
 
     public User findUserById(Long userId) {
         return userRepository.findById(userId)
-            .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
     public ResponseEntity<ProfileResponseDto> getProfile(Long id) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
         Long userId = user.getId();
         String username = user.getUsername();
         String introduction = user.getIntroduction();
         int likedPosts = myLikesService.getCountLikedPosts(userId);
-        int likedComments=myLikesService.getCountLikedComments(userId);
+        int likedComments = myLikesService.getCountLikedComments(userId);
 
-        ProfileResponseDto responseDto = new ProfileResponseDto(userId, username, introduction,likedPosts,likedComments);
+        ProfileResponseDto responseDto = new ProfileResponseDto(userId, username, introduction, likedPosts, likedComments);
 
         return ResponseEntity.ok().body(responseDto);
     }

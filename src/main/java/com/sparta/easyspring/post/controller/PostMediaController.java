@@ -22,7 +22,7 @@ public class PostMediaController {
     private final PostMediaService postMediaService;
 
     @GetMapping("/{postId}/media")
-    public ResponseEntity<List<PostMediaResponseDto>> getAllFiles(@PathVariable(name = "postId") Long postId){
+    public ResponseEntity<List<PostMediaResponseDto>> getAllFiles(@PathVariable(name = "postId") Long postId) {
         return ResponseEntity.status(HttpStatus.OK).body(postMediaService.getAllFiles(postId));
     }
 

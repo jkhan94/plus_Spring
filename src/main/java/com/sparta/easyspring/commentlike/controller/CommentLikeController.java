@@ -19,12 +19,12 @@ public class CommentLikeController {
 
     @PostMapping("/like/comment/{userId}/{commentId}")
     public ResponseEntity<String> likeComment(@PathVariable Long userId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentLikeService.likeComment(userId,commentId,userDetails.getUser());
+        return commentLikeService.likeComment(userId, commentId, userDetails.getUser());
     }
 
     @DeleteMapping("/unlike/comment/{userId}/{commentId}")
-    public ResponseEntity<String> unlikeComment(@PathVariable Long userId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails ) {
-        return commentLikeService.unlikeComment(userId,commentId,userDetails.getUser());
+    public ResponseEntity<String> unlikeComment(@PathVariable Long userId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentLikeService.unlikeComment(userId, commentId, userDetails.getUser());
     }
 }
 

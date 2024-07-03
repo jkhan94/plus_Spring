@@ -3,11 +3,9 @@ package com.sparta.easyspring.comment.controller;
 import com.sparta.easyspring.comment.dto.CommentRequestDto;
 import com.sparta.easyspring.comment.dto.CommentResponseDto;
 import com.sparta.easyspring.comment.service.CommentService;
-import com.sparta.easyspring.post.dto.PostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +28,7 @@ public class CommentController {
     }
 
     @GetMapping("/single/{commentId}")
-    public ResponseEntity<CommentResponseDto> getComment(@PathVariable(name = "commentId") Long commentId){
+    public ResponseEntity<CommentResponseDto> getComment(@PathVariable(name = "commentId") Long commentId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(commentService.getComment(commentId));

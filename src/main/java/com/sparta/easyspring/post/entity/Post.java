@@ -1,12 +1,12 @@
 package com.sparta.easyspring.post.entity;
 
 import com.sparta.easyspring.admin.dto.PostWithStatusRequestDto;
-import com.sparta.easyspring.auth.entity.UserRoleEnum;
-import com.sparta.easyspring.postlike.entity.PostLike;
-import com.sparta.easyspring.timestamp.TimeStamp;
 import com.sparta.easyspring.auth.entity.User;
+import com.sparta.easyspring.auth.entity.UserRoleEnum;
 import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.post.dto.PostRequestDto;
+import com.sparta.easyspring.postlike.entity.PostLike;
+import com.sparta.easyspring.timestamp.TimeStamp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class Post extends TimeStamp {
     @Column(nullable = false)
     private Long likes;
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> commentList = new ArrayList<>();
@@ -42,19 +42,20 @@ public class Post extends TimeStamp {
     private boolean isPinned = false; // 상단 고정 여부
 
     public Post(PostRequestDto requestDto, User user) {
-        this.title= requestDto.getTitle();
-        this.contents= requestDto.getContents();
-        this.likes=0L;
-        this.user=user;
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+        this.likes = 0L;
+        this.user = user;
     }
 
     public void update(PostRequestDto requestDto) {
-        this.title= requestDto.getTitle();
-        this.contents= requestDto.getContents();
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
     }
+
     public void updateByAdmin(PostRequestDto requestDto) {
-        this.title= requestDto.getTitle() + " (Admin에 의해 수정되었음)";
-        this.contents= requestDto.getContents();
+        this.title = requestDto.getTitle() + " (Admin에 의해 수정되었음)";
+        this.contents = requestDto.getContents();
     }
 
     public void setPostLike(PostLike postLike) {
@@ -62,12 +63,12 @@ public class Post extends TimeStamp {
     }
 
     // 어드민 글 생성시 필요한 생성자
-    public Post(PostWithStatusRequestDto requestDto, User user, UserRoleEnum roleEnum){
-        if (roleEnum == UserRoleEnum.ADMIN){
+    public Post(PostWithStatusRequestDto requestDto, User user, UserRoleEnum roleEnum) {
+        if (roleEnum == UserRoleEnum.ADMIN) {
             this.title = requestDto.getTitle();
-            this.contents= requestDto.getContents();
-            this.likes=0L;
-            this.user=user;
+            this.contents = requestDto.getContents();
+            this.likes = 0L;
+            this.user = user;
         }
     }
 
@@ -82,6 +83,7 @@ public class Post extends TimeStamp {
     public void makeNoticePost(boolean isNotice) {
         this.isNotice = isNotice;
     }
+
     public void makePinPost(boolean isPinned) {
         this.isPinned = isPinned;
     }

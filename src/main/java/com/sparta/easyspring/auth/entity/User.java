@@ -1,16 +1,12 @@
 package com.sparta.easyspring.auth.entity;
 
-import com.sparta.easyspring.auth.dto.AuthRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
-@Table(name="users")
+@Table(name = "users")
 @NoArgsConstructor
 public class User {
 
@@ -39,14 +35,15 @@ public class User {
     private String introduction;
 
 
-    public void updateUsername(String username){
+    public void updateUsername(String username) {
         this.username = username;
     }
+
     public void updatePassword(String password) {
         this.password = password;
     }
 
-    public void updateIntroduction(String introduction){
+    public void updateIntroduction(String introduction) {
         this.introduction = introduction;
     }
 

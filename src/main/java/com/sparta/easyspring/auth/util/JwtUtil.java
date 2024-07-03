@@ -6,9 +6,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import java.util.Date;
-import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
 
 @Component
 public class JwtUtil {
@@ -39,7 +40,7 @@ public class JwtUtil {
 
     public String createAccessTokenFromRefresh(String refreshToken) {
 
-        if(validateToken(refreshToken)){
+        if (validateToken(refreshToken)) {
             String username = getUsernameFromToken(refreshToken);
             return createAccessToken(username);
         }
@@ -56,22 +57,23 @@ public class JwtUtil {
      */
     public String generateToken(String username, long expiration) {
         return Jwts.builder()
-            .setSubject(username) // 토큰 발행 주체
-            .setIssuedAt(new Date()) // 토큰 발행 시간
-            .setExpiration(new Date(System.currentTimeMillis() + expiration)) // 토큰 만료 시간
-            .signWith(secretKey, SignatureAlgorithm.HS256)
-            .compact();
+                .setSubject(username) // 토큰 발행 주체
+                .setIssuedAt(new Date()) // 토큰 발행 시간
+                .setExpiration(new Date(System.currentTimeMillis() + expiration)) // 토큰 만료 시간
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     /**
      * 토큰 유효성 검사 : claims와 userDetails비교
+     *
      * @param token
      * @return
      */
-    public boolean validateToken(String token,UserDetailsImpl userDetails) {
+    public boolean validateToken(String token, UserDetailsImpl userDetails) {
         try {
             String username = getUsernameFromToken(token);
-            return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
         } catch (Exception e) {
             return false;
         }
@@ -79,10 +81,11 @@ public class JwtUtil {
 
     /**
      * 토큰 유효성 검사
+     *
      * @param token
      * @return
      */
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
             return !isTokenExpired(token);
         } catch (Exception e) {
@@ -98,14 +101,15 @@ public class JwtUtil {
      */
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(secretKey)
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
      * Bearer 제거하고 token 보내기
+     *
      * @param token
      * @return
      */
@@ -115,6 +119,7 @@ public class JwtUtil {
 
     /**
      * 토큰 만료일 cliam추출
+     *
      * @param token
      * @return
      */

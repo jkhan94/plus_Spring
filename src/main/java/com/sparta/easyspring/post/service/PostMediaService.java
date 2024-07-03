@@ -28,19 +28,19 @@ public class PostMediaService {
 
     public Map.Entry<String, String> uploadFiles(Long postId, User user, MultipartFile file) throws IOException {
         Post post = postService.findPostbyId(postId);
-        if(!post.getUser().getId().equals(user.getId())){
+        if (!post.getUser().getId().equals(user.getId())) {
             throw new CustomException(INCORRECT_USER);
         }
         long countMedia = postMediaRepository.countByPost(post);
-        if(countMedia==5 || countMedia>5){
+        if (countMedia == 5 || countMedia > 5) {
             throw new CustomException(EXCEED_MAX_COUNT);
         }
         validateFile(file);
         // 파일을 S3에 저장하고 URL과 파일 이름을 받아옴
         String fileUrl = s3Service.saveFile(file).getKey();
-        String originalFilename= s3Service.saveFile(file).getValue();
+        String originalFilename = s3Service.saveFile(file).getValue();
 
-        PostMedia postMedia = new PostMedia(post,user,fileUrl,originalFilename);
+        PostMedia postMedia = new PostMedia(post, user, fileUrl, originalFilename);
         postMediaRepository.save(postMedia);
 
         return new AbstractMap.SimpleEntry<>(fileUrl, originalFilename);
@@ -48,11 +48,11 @@ public class PostMediaService {
 
     public void deleteFile(Long postId, User user, Long fileId) {
         Post post = postService.findPostbyId(postId);
-        if(!post.getUser().getId().equals(user.getId())){
+        if (!post.getUser().getId().equals(user.getId())) {
             throw new CustomException(INCORRECT_USER);
         }
-        PostMedia postMedia = postMediaRepository.findByIdAndPost(fileId,post);
-        if(postMedia==null){
+        PostMedia postMedia = postMediaRepository.findByIdAndPost(fileId, post);
+        if (postMedia == null) {
             throw new CustomException(NON_EXISTENT_ELEMENT);
         }
         postMediaRepository.delete(postMedia);
@@ -64,11 +64,12 @@ public class PostMediaService {
         List<PostMedia> postMediaList = postMediaRepository.findAllByPost(post);
         List<PostMediaResponseDto> responseDtos = new ArrayList<>();
         for (PostMedia postMedia : postMediaList) {
-            PostMediaResponseDto postMediaResponseDto= new PostMediaResponseDto(postMedia);
+            PostMediaResponseDto postMediaResponseDto = new PostMediaResponseDto(postMedia);
             responseDtos.add(postMediaResponseDto);
         }
         return responseDtos;
     }
+
     private void validateFile(MultipartFile file) {
         String filename = file.getOriginalFilename();
         String fileExtension = getFileExtension(filename).toLowerCase();

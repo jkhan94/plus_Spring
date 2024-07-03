@@ -12,10 +12,10 @@ public class PostMediaResponseDto {
     private Long userId;
 
     public PostMediaResponseDto(PostMedia postMedia) {
-        this.id=postMedia.getId();
-        this.postId=postMedia.getPost().getId();
-        this.userId=postMedia.getUser().getId();
-        this.imageUrl= postMedia.getImageUrl();
-        this.filename=postMedia.getFilename();
+        this.id = postMedia.getId();
+        this.postId = postMedia.getPost().getId();
+        this.userId = postMedia.getUser().getId();
+        this.imageUrl = postMedia.getImageUrl();
+        this.filename = postMedia.getFilename();
     }
 }

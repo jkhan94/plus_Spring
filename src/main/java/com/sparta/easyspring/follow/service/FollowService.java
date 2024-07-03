@@ -18,27 +18,27 @@ public class FollowService {
 
     public void addFollow(Long followingId, User user) {
         User followingUser = userService.findUserById(followingId);
-        if(followingId.equals(user.getId())){
+        if (followingId.equals(user.getId())) {
             throw new CustomException(INCORRECT_SELF_FOLLOW);
         }
-        Follow checkFollow = findFollowById(followingUser.getId(),user);
-        if(checkFollow != null){
+        Follow checkFollow = findFollowById(followingUser.getId(), user);
+        if (checkFollow != null) {
             throw new CustomException(ALREADY_FOLLOW);
         }
-        Follow follow = new Follow(followingUser,user);
+        Follow follow = new Follow(followingUser, user);
         followRepository.save(follow);
     }
 
     public void deleteFollow(Long followingId, User user) {
         User followingUser = userService.findUserById(followingId);
-        Follow checkFollow = findFollowById(followingUser.getId(),user);
-        if(checkFollow == null){
+        Follow checkFollow = findFollowById(followingUser.getId(), user);
+        if (checkFollow == null) {
             throw new CustomException(NON_EXISTENT_ELEMENT);
         }
         followRepository.delete(checkFollow);
     }
 
-    public Follow findFollowById(Long followingId, User user){
+    public Follow findFollowById(Long followingId, User user) {
         return followRepository.findByFollowingIdAndUser(followingId, user);
     }
 }

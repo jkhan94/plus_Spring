@@ -13,14 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -54,8 +47,8 @@ public class AuthRestController {
 
     @PutMapping("/update/password")
     public ResponseEntity<AuthResponseDto> updatePassword(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody UpdatePasswordRequestDto requestDto) {
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody UpdatePasswordRequestDto requestDto) {
         return userService.updatePassword(requestDto);
     }
 
@@ -67,15 +60,15 @@ public class AuthRestController {
     @GetMapping("/login/kakao")
     public ResponseEntity<AuthResponseDto> kakaoLogin(@RequestParam String code) throws Exception {
         ResponseEntity<AuthResponseDto> response = kakaoService.login(code);
-        log.info("userid :"+response.getBody().getId());
+        log.info("userid :" + response.getBody().getId());
         log.info("username :" + response.getBody().getUsername());
         return response;
     }
 
     @GetMapping("/login/naver")
-    public ResponseEntity<AuthResponseDto> naverLogin(@RequestParam String code) throws Exception{
+    public ResponseEntity<AuthResponseDto> naverLogin(@RequestParam String code) throws Exception {
         ResponseEntity<AuthResponseDto> response = naverService.login(code);
-        log.info("userid :"+response.getBody().getId());
+        log.info("userid :" + response.getBody().getId());
         log.info("username :" + response.getBody().getUsername());
         return response;
     }

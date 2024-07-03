@@ -26,9 +26,9 @@ public class PostMedia extends TimeStamp {
     private User user;
 
     public PostMedia(Post post, User user, String fileUrl, String originalFilename) {
-        this.post=post;
-        this.user=user;
-        this.imageUrl=fileUrl;
-        this.filename=originalFilename;
+        this.post = post;
+        this.user = user;
+        this.imageUrl = fileUrl;
+        this.filename = originalFilename;
     }
 }
