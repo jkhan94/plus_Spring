@@ -5,9 +5,9 @@ import com.sparta.easyspring.auth.repository.UserRepository;
 import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.repository.CommentRepository;
 import com.sparta.easyspring.commentlike.entity.CommentLike;
+import com.sparta.easyspring.config.MockTestDataSetup;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
-import com.sparta.easyspring.config.MockTestDataSetup;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +34,24 @@ class CommentLikeRepositoryTest {
 
     @Autowired
     CommentLikeRepository commentLikeRepository;
+
     @Test
     @DisplayName("성공: 포스트, 사용자로 좋아요한 포스트 찾기")
-    void findByUserAndComment(){
+    void findByUserAndComment() {
         // given
         User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
         userRepository.save(TEST_USER);
 
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L, TEST_USER);
         postRepository.save(TEST_POST);
 
-        Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,TEST_USER,TEST_POST);
+        Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L, TEST_USER, TEST_POST);
         commentRepository.save(TEST_COMMENT);
 
-        CommentLike TEST_COMMENTLIKE = new CommentLike(TEST_USER,TEST_COMMENT);
+        CommentLike TEST_COMMENTLIKE = new CommentLike(TEST_USER, TEST_COMMENT);
         ReflectionTestUtils.setField(TEST_COMMENTLIKE, "id", 1L);
 
-        CommentLike savedCommentLike=commentLikeRepository.save(TEST_COMMENTLIKE);
+        CommentLike savedCommentLike = commentLikeRepository.save(TEST_COMMENTLIKE);
 
         // when
         CommentLike resultCommentLike = commentLikeRepository.findByUserAndComment(TEST_USER, TEST_COMMENT).orElse(null);

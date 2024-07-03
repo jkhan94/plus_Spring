@@ -6,10 +6,10 @@ import com.sparta.easyspring.comment.entity.Comment;
 import com.sparta.easyspring.comment.service.CommentService;
 import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.commentlike.repository.CommentLikeRepository;
+import com.sparta.easyspring.config.MockTestDataSetup;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
 import com.sparta.easyspring.post.entity.Post;
-import com.sparta.easyspring.config.MockTestDataSetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,8 +60,8 @@ class CommentLikeServiceTest {
         long TEST_COMMENT_ID = 1L;
         String expectedMsg = "댓글 좋아요 완료";
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L, ANOTHER_USER);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L, ANOTHER_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
@@ -69,7 +69,7 @@ class CommentLikeServiceTest {
         given(commentLikeRepository.save(any())).willReturn(null);
 
         // when
-        String resultMsg = String.valueOf(commentLikeService.likeComment(TEST_USER_ID,TEST_COMMENT_ID,TEST_USER).getBody());
+        String resultMsg = String.valueOf(commentLikeService.likeComment(TEST_USER_ID, TEST_COMMENT_ID, TEST_USER).getBody());
 
         // then
         assertEquals(resultMsg, expectedMsg);
@@ -96,16 +96,16 @@ class CommentLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_COMMENT_ID = 1L;
 
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L, ANOTHER_USER, TEST_POST);
 
-        CommentLike commentLike = new CommentLike(TEST_USER,TEST_COMMENT);
+        CommentLike commentLike = new CommentLike(TEST_USER, TEST_COMMENT);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
         given(commentLikeRepository.findByUserAndComment(TEST_USER, TEST_COMMENT)).willReturn(Optional.of(commentLike));
 
         // when - then
-        assertThrows(CustomException.class, () -> commentLikeService.likeComment(TEST_USER_ID, TEST_COMMENT_ID,TEST_USER));
+        assertThrows(CustomException.class, () -> commentLikeService.likeComment(TEST_USER_ID, TEST_COMMENT_ID, TEST_USER));
     }
 
     @Test
@@ -115,14 +115,14 @@ class CommentLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_COMMENT_ID = 1L;
 
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,TEST_USER,TEST_POST);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L, TEST_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
         given(commentLikeRepository.findByUserAndComment(TEST_USER, TEST_COMMENT)).willReturn(Optional.empty());
 
         // when - then
-        assertThrows(CustomException.class, () -> commentLikeService.likeComment(TEST_USER_ID, TEST_COMMENT_ID,TEST_USER));
+        assertThrows(CustomException.class, () -> commentLikeService.likeComment(TEST_USER_ID, TEST_COMMENT_ID, TEST_USER));
     }
 
     @Test
@@ -133,10 +133,10 @@ class CommentLikeServiceTest {
         long TEST_COMMENT_ID = 1L;
         String expectedMsg = "댓글 좋아요 해제 완료";
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L, ANOTHER_USER);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L, ANOTHER_USER, TEST_POST);
 
-        CommentLike TEST_COMMENTLIKE = new CommentLike(TEST_USER,TEST_COMMENT);
+        CommentLike TEST_COMMENTLIKE = new CommentLike(TEST_USER, TEST_COMMENT);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
@@ -144,7 +144,7 @@ class CommentLikeServiceTest {
         doNothing().when(commentLikeRepository).delete(TEST_COMMENTLIKE);
 
         // when
-        String resultMsg = String.valueOf(commentLikeService.unlikeComment(TEST_USER_ID, TEST_COMMENT_ID,TEST_USER).getBody());
+        String resultMsg = String.valueOf(commentLikeService.unlikeComment(TEST_USER_ID, TEST_COMMENT_ID, TEST_USER).getBody());
 
         // then
         assertEquals(resultMsg, expectedMsg);
@@ -171,14 +171,14 @@ class CommentLikeServiceTest {
         long TEST_USER_ID = 1L;
         long TEST_COMMENT_ID = 1L;
 
-        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,ANOTHER_USER);
-        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L,ANOTHER_USER,TEST_POST);
+        TEST_POST = MockTestDataSetup.mockTestPostSetup(1L, ANOTHER_USER);
+        TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(1L, ANOTHER_USER, TEST_POST);
 
         given(userService.findUserById(TEST_USER_ID)).willReturn(TEST_USER);
         given(commentService.findCommentbyId(TEST_COMMENT_ID)).willReturn(TEST_COMMENT);
         given(commentLikeRepository.findByUserAndComment(TEST_USER, TEST_COMMENT)).willReturn(Optional.empty());
 
         // when - then
-        assertThrows(CustomException.class, () -> commentLikeService.unlikeComment(TEST_USER_ID, TEST_COMMENT_ID,TEST_USER));
+        assertThrows(CustomException.class, () -> commentLikeService.unlikeComment(TEST_USER_ID, TEST_COMMENT_ID, TEST_USER));
     }
 }

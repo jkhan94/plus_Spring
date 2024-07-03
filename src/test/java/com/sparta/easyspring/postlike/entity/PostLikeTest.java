@@ -1,8 +1,8 @@
 package com.sparta.easyspring.postlike.entity;
 
 import com.sparta.easyspring.auth.entity.User;
-import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.config.MockTestDataSetup;
+import com.sparta.easyspring.post.entity.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ class PostLikeTest {
         long TEST_POST_LIKES = 1L;
 
         User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
-        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
+        Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L, TEST_USER);
 
         // when
         postLike = new PostLike(TEST_USER, TEST_POST);
