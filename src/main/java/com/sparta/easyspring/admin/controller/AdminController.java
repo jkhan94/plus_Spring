@@ -35,10 +35,11 @@ public class AdminController {
 
         return ResponseEntity.ok("해당 유저의 역할이 변경되었습니다.");
     }
+
     // 전체 회원 조회
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")
-    public ResponseEntity<List<AllOfUserResponseDto>> getAllUserByAdmin(){
+    public ResponseEntity<List<AllOfUserResponseDto>> getAllUserByAdmin() {
         List<AllOfUserResponseDto> users = adminUserManagementService.getAllUser();
         return ResponseEntity.ok(users);
     }
@@ -106,7 +107,7 @@ public class AdminController {
     // 전체 댓글 조회
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/comments")
-    public ResponseEntity<List<AllOfCommentResponseDto>> getAllCommentsByAdmin(){
+    public ResponseEntity<List<AllOfCommentResponseDto>> getAllCommentsByAdmin() {
         return ResponseEntity.ok(adminCommentManagementService.getAllComments());
     }
 

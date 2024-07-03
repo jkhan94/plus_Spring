@@ -50,6 +50,6 @@ public class AdminCommentManagementService {
 
     private AllOfCommentResponseDto entityToDto(Comment comment) {
         // User를 UserResponseDto로 변환하는 로직을 작성
-        return new AllOfCommentResponseDto( comment.getUser().getId(), comment.getPost().getId() ,comment.getId(), comment.getContents());
+        return new AllOfCommentResponseDto(comment.getUser().getId(), comment.getPost().getId(), comment.getId(), comment.getContents());
     }
 }

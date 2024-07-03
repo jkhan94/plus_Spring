@@ -18,12 +18,12 @@ public class PostResponseDto {
     private LocalDateTime modifiedAt;
 
     public PostResponseDto(Post post) {
-        this.id= post.getId();
-        this.title= post.getTitle();
-        this.contents= post.getContents();
-        this.likes= post.getLikes();
-        this.userId=post.getUser().getId();
-        this.createdAt= post.getCreatedAt();
-        this.modifiedAt= post.getModifiedAt();
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.contents = post.getContents();
+        this.likes = post.getLikes();
+        this.userId = post.getUser().getId();
+        this.createdAt = post.getCreatedAt();
+        this.modifiedAt = post.getModifiedAt();
     }
 }

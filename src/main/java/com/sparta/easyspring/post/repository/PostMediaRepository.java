@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostMediaRepository extends JpaRepository<PostMedia,Long> {
+public interface PostMediaRepository extends JpaRepository<PostMedia, Long> {
     List<PostMedia> findAllByPost(Post post);
+
     long countByPost(Post post);
 
     PostMedia findByIdAndPost(Long id, Post post);

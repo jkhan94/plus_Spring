@@ -1,6 +1,5 @@
 package com.sparta.easyspring.s3.service;
 
-import ch.qos.logback.core.joran.sanity.Pair;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,7 @@ public class S3Service {
     }
 
     // 파일 삭제
-    public void deleteImage(String originalFilename)  {
+    public void deleteImage(String originalFilename) {
         amazonS3.deleteObject(bucket, originalFilename);
     }
 }

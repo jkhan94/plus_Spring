@@ -15,14 +15,14 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/{followingId}")
-    public ResponseEntity<String> addFollow(@PathVariable(name = "followingId") Long followingId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        followService.addFollow(followingId,userDetails.getUser());
+    public ResponseEntity<String> addFollow(@PathVariable(name = "followingId") Long followingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        followService.addFollow(followingId, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body("팔로우 완료");
     }
 
     @DeleteMapping("/{followingId}")
-    public ResponseEntity<String> deleteFollow(@PathVariable(name = "followingId") Long followingId,@AuthenticationPrincipal UserDetailsImpl userDetails){
-        followService.deleteFollow(followingId,userDetails.getUser());
+    public ResponseEntity<String> deleteFollow(@PathVariable(name = "followingId") Long followingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        followService.deleteFollow(followingId, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body("팔로우 취소 완료");
     }
 }

@@ -3,7 +3,8 @@ package com.sparta.easyspring.auth.entity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserTest {
 
@@ -11,7 +12,7 @@ public class UserTest {
 
     @Test
     @DisplayName("User 생성자")
-    void constructorTest(){
+    void constructorTest() {
         // given
         String username = "seokjoon";
         String password = "1234";

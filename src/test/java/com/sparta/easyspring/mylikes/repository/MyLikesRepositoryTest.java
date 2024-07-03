@@ -90,7 +90,7 @@ class MyLikesRepositoryTest {
             PAGE_TEST_POST_ALL.add(TEST_POST);
         }
 
-        for (int i=postNum-1 ; i>=0; i--) {
+        for (int i = postNum - 1; i >= 0; i--) {
             if (i >= postNum - PAGEABLE1.getPageSize()) {
                 PAGE_TEST_POST1.add(PAGE_TEST_POST_ALL.get(i));
             } else {
@@ -141,7 +141,7 @@ class MyLikesRepositoryTest {
             Post TEST_POST = MockTestDataSetup.mockTestPostSetup(i, TEST_USER);
             postRepository.save(TEST_POST);
 
-            Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(i,COMMENT_USER,TEST_POST);
+            Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(i, COMMENT_USER, TEST_POST);
             commentRepository.save(TEST_COMMENT);
 
             CommentLike TEST_COMMENTLIKE = new CommentLike(LIKE_USER, TEST_COMMENT);
@@ -149,7 +149,7 @@ class MyLikesRepositoryTest {
             PAGE_TEST_COMMENT_ALL.add(TEST_COMMENT);
         }
 
-        for (int i=commentNum-1 ; i>=0; i--) {
+        for (int i = commentNum - 1; i >= 0; i--) {
             if (i >= commentNum - PAGEABLE1.getPageSize()) {
                 PAGE_TEST_COMMENT1.add(PAGE_TEST_COMMENT_ALL.get(i));
             } else {
@@ -233,7 +233,7 @@ class MyLikesRepositoryTest {
             Post TEST_POST = MockTestDataSetup.mockTestPostSetup(i, TEST_USER);
             postRepository.save(TEST_POST);
 
-            Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(i,COMMENT_USER,TEST_POST);
+            Comment TEST_COMMENT = MockTestDataSetup.mockTestCommentSetup(i, COMMENT_USER, TEST_POST);
             commentRepository.save(TEST_COMMENT);
 
             CommentLike TEST_COMMENTLIKE = new CommentLike(LIKE_USER, TEST_COMMENT);

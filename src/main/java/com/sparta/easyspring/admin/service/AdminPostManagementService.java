@@ -3,7 +3,6 @@ package com.sparta.easyspring.admin.service;
 import com.sparta.easyspring.admin.dto.PostWithStatusRequestDto;
 import com.sparta.easyspring.auth.entity.User;
 import com.sparta.easyspring.auth.security.UserDetailsImpl;
-import com.sparta.easyspring.auth.security.UserDetailsServiceImpl;
 import com.sparta.easyspring.exception.CustomException;
 import com.sparta.easyspring.exception.ErrorEnum;
 import com.sparta.easyspring.post.dto.PostRequestDto;
@@ -74,7 +73,7 @@ public class AdminPostManagementService {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User loginUser = userDetails.getUser();
 
-        Post post = new Post(requestDto,loginUser,loginUser.getUserRole());
+        Post post = new Post(requestDto, loginUser, loginUser.getUserRole());
 
         post.makeNoticePost(requestDto.getNoticeOption());
         post.makePinPost(requestDto.getPinnedOption());

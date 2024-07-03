@@ -6,13 +6,12 @@ import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.timestamp.TimeStamp;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "comments")
@@ -59,6 +58,7 @@ public class Comment extends TimeStamp {
     public void increaseLikes() {
         this.likes += 1L;
     }
+
     public void decreaseLikes() {
         this.likes -= 1L;
     }

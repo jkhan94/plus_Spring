@@ -17,8 +17,8 @@ public class AdminUserInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(userRepository.findByUsername("Admin").isEmpty()) {
-            User adminUser = new User("admin",passwordEncoder.encode("adminPassword"), UserRoleEnum.ADMIN);
+        if (userRepository.findByUsername("Admin").isEmpty()) {
+            User adminUser = new User("admin", passwordEncoder.encode("adminPassword"), UserRoleEnum.ADMIN);
 
             userRepository.save(adminUser);
         }

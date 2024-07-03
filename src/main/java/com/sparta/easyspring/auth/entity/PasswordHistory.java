@@ -1,13 +1,7 @@
 package com.sparta.easyspring.auth.entity;
 
 import com.sparta.easyspring.timestamp.TimeStamp;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,14 +11,14 @@ import lombok.NoArgsConstructor;
 public class PasswordHistory extends TimeStamp {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String password;
 
     public PasswordHistory(String password, User user) {
