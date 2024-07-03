@@ -16,7 +16,7 @@ class CommentLikeTest {
     @DisplayName("CommentLike 생성")
     void createCommentLike(){
         // given
-        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
         Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
 
         // when

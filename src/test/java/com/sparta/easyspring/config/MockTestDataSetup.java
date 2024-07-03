@@ -11,10 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class MockTestDataSetup {
-    public static User mockTestUserSetup() {
-        long TEST_USER_ID = 1L;
-        String TEST_USER_NAME = "username1";
-        String TEST_USER_PASSWORD = "password1";
+    public static User mockTestUserSetup(long userId) {
+        long TEST_USER_ID = userId;
+        String TEST_USER_NAME = "username"+userId;
+        String TEST_USER_PASSWORD = "password"+userId;
         User TEST_USER = new User();
         ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
         ReflectionTestUtils.setField(TEST_USER, "username", TEST_USER_NAME);
@@ -22,19 +22,6 @@ public class MockTestDataSetup {
         ReflectionTestUtils.setField(TEST_USER, "userRole", UserRoleEnum.USER);
         ReflectionTestUtils.setField(TEST_USER, "userStatus", UserStatus.ACTIVE);
         return TEST_USER;
-    }
-
-    public static User mockAnotherUserSetup() {
-        long ANOTHER_USER_ID = 2L;
-        String ANOTHER_USER_NAME = "username2";
-        String ANOTHER_USER_PASSWORD = "password2";
-        User ANOTHER_USER = new User();
-        ReflectionTestUtils.setField(ANOTHER_USER, "id", ANOTHER_USER_ID);
-        ReflectionTestUtils.setField(ANOTHER_USER, "username", ANOTHER_USER_NAME);
-        ReflectionTestUtils.setField(ANOTHER_USER, "password", ANOTHER_USER_PASSWORD);
-        ReflectionTestUtils.setField(ANOTHER_USER, "userRole", UserRoleEnum.USER);
-        ReflectionTestUtils.setField(ANOTHER_USER, "userStatus", UserStatus.ACTIVE);
-        return ANOTHER_USER;
     }
 
     public static Post mockTestPostSetup(long postId, User user) {

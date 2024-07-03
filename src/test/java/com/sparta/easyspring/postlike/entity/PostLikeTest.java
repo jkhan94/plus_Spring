@@ -16,13 +16,13 @@ class PostLikeTest {
     @DisplayName("PostLike 생성자 확인")
     void constructorTest() {
         // given
-        String TEST_USER_NAME = "username";
-        String TEST_USER_PASSWORD = "password";
+        String TEST_USER_NAME = "username1";
+        String TEST_USER_PASSWORD = "password1";
         String TEST_POST_TITLE = "post title";
         String TEST_POST_CONTENTS = "post contents";
         long TEST_POST_LIKES = 1L;
 
-        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
         Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);
 
         // when
