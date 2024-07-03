@@ -8,6 +8,7 @@ import com.sparta.easyspring.commentlike.entity.CommentLike;
 import com.sparta.easyspring.commentlike.repository.CommentLikeRepository;
 import com.sparta.easyspring.config.MockTestDataSetup;
 import com.sparta.easyspring.config.TestJpaConfig;
+import com.sparta.easyspring.config.TestTruncateTable;
 import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
 import com.sparta.easyspring.postlike.entity.PostLike;
@@ -34,7 +35,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Import(TestJpaConfig.class)
@@ -59,7 +59,10 @@ class MyLikesRepositoryTest {
     CommentLikeRepository commentLikeRepository;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    DataSource dataSource;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     User TEST_USER;
     User LIKE_USER;
@@ -82,27 +85,12 @@ class MyLikesRepositoryTest {
     }
 
     @AfterEach
-    void tearDown(@Autowired DataSource dataSource) {
-        final List<String> truncateQueries = getTruncateQueries(jdbcTemplate);
-        truncateTables(jdbcTemplate, truncateQueries);
+    void tearDown() {
+        TestTruncateTable.init(dataSource, jdbcTemplate);
     }
-
-    private List<String> getTruncateQueries(final JdbcTemplate jdbcTemplate) {
-        return jdbcTemplate.queryForList("SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'", String.class);
-    }
-
-    private void truncateTables(final JdbcTemplate jdbcTemplate, final List<String> truncateQueries) {
-        execute(jdbcTemplate, "SET REFERENTIAL_INTEGRITY FALSE");
-        truncateQueries.forEach(v -> execute(jdbcTemplate, v));
-        execute(jdbcTemplate, "SET REFERENTIAL_INTEGRITY TRUE");
-    }
-
-    private void execute(final JdbcTemplate jdbcTemplate, final String query) {
-        jdbcTemplate.execute(query);
-    }
-
 
     @Test
+    @Transactional
     @DisplayName("성공 : 내가 좋아하는 게시글 목록 조회")
     void findAllLikedPosts() {
         // given
@@ -113,8 +101,8 @@ class MyLikesRepositoryTest {
 
         for (long i = 1; i <= postNum; i++) {
             Post TEST_POST = MockTestDataSetup.mockTestPostSetup(i, TEST_USER);
-            postRepository.save(TEST_POST);
-            PostLike TEST_POSTLIKE = new PostLike(LIKE_USER, TEST_POST);
+            Post MERGED_POST = postRepository.save(TEST_POST);
+            PostLike TEST_POSTLIKE = new PostLike(LIKE_USER, MERGED_POST);
             postLikeRepository.save(TEST_POSTLIKE);
             PAGE_TEST_POST_ALL.add(TEST_POST);
         }
@@ -158,6 +146,7 @@ class MyLikesRepositoryTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("성공 : 내가 좋아하는 댓글 목록 조회")
     void findAllLikeComments() {
         // given
