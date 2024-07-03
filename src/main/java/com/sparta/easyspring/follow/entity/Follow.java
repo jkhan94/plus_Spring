@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "follow")
+@Table(name = "follows")
 @RequiredArgsConstructor
 public class Follow extends TimeStamp {
     @Id
