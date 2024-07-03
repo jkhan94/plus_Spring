@@ -48,8 +48,8 @@ class CommentLikeServiceTest {
 
     @BeforeEach
     void setUp() {
-        TEST_USER = MockTestDataSetup.mockTestUserSetup();
-        ANOTHER_USER = MockTestDataSetup.mockAnotherUserSetup();
+        TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
+        ANOTHER_USER = MockTestDataSetup.mockTestUserSetup(2L);
     }
 
     @Test

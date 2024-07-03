@@ -83,7 +83,7 @@ class CommentLikeControllerTest{
 
     // 가짜 유저와 가짜 인증 객체 생성
     private static void mockUserSetup() {
-        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
 
         UserDetailsImpl testUserDetails = new UserDetailsImpl(TEST_USER);
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());

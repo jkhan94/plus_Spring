@@ -38,7 +38,7 @@ class CommentLikeRepositoryTest {
     @DisplayName("성공: 포스트, 사용자로 좋아요한 포스트 찾기")
     void findByUserAndComment(){
         // given
-        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
         userRepository.save(TEST_USER);
 
         Post TEST_POST = MockTestDataSetup.mockTestPostSetup(1L,TEST_USER);

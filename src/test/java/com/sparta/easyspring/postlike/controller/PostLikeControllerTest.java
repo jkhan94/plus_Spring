@@ -69,7 +69,7 @@ class PostLikeControllerTest {
     }
 
     private static void mockUserSetup() {
-        User TEST_USER = MockTestDataSetup.mockTestUserSetup();
+        User TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
 
         UserDetailsImpl testUserDetails = new UserDetailsImpl(TEST_USER);
         mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
