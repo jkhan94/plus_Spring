@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         classes = SecurityConfig.class
                 )
         })
-class CommentLikeControllerTest{
+class CommentLikeControllerTest {
 
     private MockMvc mvc;
 
@@ -77,8 +77,6 @@ class CommentLikeControllerTest{
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
-
-
 
 
     // 가짜 유저와 가짜 인증 객체 생성

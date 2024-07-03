@@ -13,8 +13,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 public class MockTestDataSetup {
     public static User mockTestUserSetup(long userId) {
         long TEST_USER_ID = userId;
-        String TEST_USER_NAME = "username"+userId;
-        String TEST_USER_PASSWORD = "password"+userId;
+        String TEST_USER_NAME = "username" + userId;
+        String TEST_USER_PASSWORD = "password" + userId;
         User TEST_USER = new User();
         ReflectionTestUtils.setField(TEST_USER, "id", TEST_USER_ID);
         ReflectionTestUtils.setField(TEST_USER, "username", TEST_USER_NAME);
