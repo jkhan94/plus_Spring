@@ -12,6 +12,7 @@ import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,14 +23,18 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 @Import(TestJpaConfig.class)
@@ -53,6 +58,9 @@ class MyLikesRepositoryTest {
     @Autowired
     CommentLikeRepository commentLikeRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     User TEST_USER;
     User LIKE_USER;
     User COMMENT_USER;
@@ -72,6 +80,27 @@ class MyLikesRepositoryTest {
         PAGEABLE1 = MockTestDataSetup.mockPageSetup(0, 5, Sort.by("createdAt").descending());
         PAGEABLE2 = MockTestDataSetup.mockPageSetup(1, 5, Sort.by("createdAt").descending());
     }
+
+    @AfterEach
+    void tearDown(@Autowired DataSource dataSource) {
+        final List<String> truncateQueries = getTruncateQueries(jdbcTemplate);
+        truncateTables(jdbcTemplate, truncateQueries);
+    }
+
+    private List<String> getTruncateQueries(final JdbcTemplate jdbcTemplate) {
+        return jdbcTemplate.queryForList("SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ';') AS q FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'", String.class);
+    }
+
+    private void truncateTables(final JdbcTemplate jdbcTemplate, final List<String> truncateQueries) {
+        execute(jdbcTemplate, "SET REFERENTIAL_INTEGRITY FALSE");
+        truncateQueries.forEach(v -> execute(jdbcTemplate, v));
+        execute(jdbcTemplate, "SET REFERENTIAL_INTEGRITY TRUE");
+    }
+
+    private void execute(final JdbcTemplate jdbcTemplate, final String query) {
+        jdbcTemplate.execute(query);
+    }
+
 
     @Test
     @DisplayName("성공 : 내가 좋아하는 게시글 목록 조회")
