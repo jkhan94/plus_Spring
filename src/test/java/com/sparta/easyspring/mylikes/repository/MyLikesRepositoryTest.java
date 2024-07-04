@@ -28,7 +28,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,9 +58,6 @@ class MyLikesRepositoryTest {
     CommentLikeRepository commentLikeRepository;
 
     @Autowired
-    DataSource dataSource;
-
-    @Autowired
     JdbcTemplate jdbcTemplate;
 
     User TEST_USER;
@@ -86,7 +82,7 @@ class MyLikesRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        TestTruncateTable.init(dataSource, jdbcTemplate);
+        TestTruncateTable.init(jdbcTemplate);
     }
 
     @Test

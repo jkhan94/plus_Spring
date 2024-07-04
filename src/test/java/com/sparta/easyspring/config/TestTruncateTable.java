@@ -1,14 +1,12 @@
 package com.sparta.easyspring.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 public class TestTruncateTable {
 
-    public static void init(DataSource dataSource, JdbcTemplate jdbcTemplate) {
+    public static void init(JdbcTemplate jdbcTemplate) {
         final List<String> truncateQueries = getTruncateQueries(jdbcTemplate);
         truncateTables(jdbcTemplate, truncateQueries);
     }
