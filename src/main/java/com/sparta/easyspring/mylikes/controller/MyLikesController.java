@@ -50,5 +50,4 @@ public class MyLikesController {
                 .body(myLikesService.getAllLikedComment(userId, page - 1, sortBy));
     }
 
-
 }

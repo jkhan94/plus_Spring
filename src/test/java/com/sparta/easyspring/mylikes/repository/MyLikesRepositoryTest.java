@@ -13,7 +13,6 @@ import com.sparta.easyspring.post.entity.Post;
 import com.sparta.easyspring.post.repository.PostRepository;
 import com.sparta.easyspring.postlike.entity.PostLike;
 import com.sparta.easyspring.postlike.repository.PostLikeRepository;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,11 +60,6 @@ class MyLikesRepositoryTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    TestEntityManager testEntityManager;
-
-    EntityManager em;
-
     User TEST_USER;
     User LIKE_USER;
     User COMMENT_USER;
@@ -75,8 +68,6 @@ class MyLikesRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        em = testEntityManager.getEntityManager();
-
         TEST_USER = MockTestDataSetup.mockTestUserSetup(1L);
         LIKE_USER = MockTestDataSetup.mockTestUserSetup(2L);
         COMMENT_USER = MockTestDataSetup.mockTestUserSetup(3L);
